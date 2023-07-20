@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 
 const montserrat = Montserrat ({ weight: '600', subsets: ['latin'] });
+
+// import them from constants
 const routes = [
     {
       label: 'Dashboard',

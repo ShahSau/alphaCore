@@ -10,7 +10,7 @@ const LandingPage = () => {
                 Login
             </Button>
         </Link>
-        <Link href='/sign-uo'>
+        <Link href='/sign-up'>
             <Button>
                 Register
             </Button>
