@@ -1,4 +1,4 @@
-import { Code, ImageIcon, MessageSquare, Music, VideoIcon } from "lucide-react";
+import { Code, ImageIcon, MessageSquare, Music, VideoIcon,GraduationCap} from "lucide-react";
 
 export const MAX_FREE_COUNTS = 5;
 
@@ -32,10 +32,18 @@ export const tools = [
     href: '/video',
   },
   {
+    label: 'Grammar Correction',
+    icon: GraduationCap,
+    color: "text-pink-700",
+    bgColor: "bg-pink-700/10",
+    href: '/grammer',
+      },
+  {
     label: 'Code Generation',
     icon: Code,
     color: "text-green-700",
     bgColor: "bg-green-700/10",
     href: '/code',
   },
+  
 ];

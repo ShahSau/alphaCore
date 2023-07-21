@@ -41,7 +41,7 @@ const routes = [
     {
         label: 'Language to SQL',
         icon: Database,
-        color: "text-green-700",
+        color: "text-red-700",
         href: '/sql',
       },
     {
