@@ -74,12 +74,12 @@ const routes = [
         color: "text-pink-700",
         href: '/explain',
       },
-      {
-        label: 'Summarize Text',
-        icon: Play,
-        color: "text-orange-700",
-        href: '/summarize',
-      },
+    {
+      label: 'Summarize Text',
+      icon: Play,
+      color: "text-orange-700",
+      href: '/summarize',
+    },
     {
       label: 'Code Generation',
       icon: Code,
