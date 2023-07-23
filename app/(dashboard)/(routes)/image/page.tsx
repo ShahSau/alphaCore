@@ -17,7 +17,7 @@ import { Loader } from "@/components/loader";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Image from "next/image"
-import { amountOptions, resolutionOptions } from "./constants";
+import { amountOptions } from "./constants";
 
 const ImagePage = () => {
     const router = useRouter()
@@ -28,7 +28,6 @@ const ImagePage = () => {
         defaultValues:{
             prompt: "",
             amount: "1",
-            resolution:"512x512"
         }
     });
 
@@ -39,8 +38,9 @@ const ImagePage = () => {
             setImages([]);
 
             const response = await axios.post('/api/image', values);
-            const urls = response.data.map((image: { url: string }) => image.url);
-
+            console.log(response)
+            // const urls = response.data.map((image: { url: string }) => image.url);
+            const urls = response.data.map((image:string)=> image);
             setImages(urls);
             form.reset();
 
@@ -115,38 +115,7 @@ const ImagePage = () => {
                                     </Select>
                                 </FormItem>
                             )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="resolution"
-                            render={({ field }) => (
-                                <FormItem className="col-span-12 lg:col-span-2">
-                                    <Select 
-                                        disabled={isLoading} 
-                                        onValueChange={field.onChange} 
-                                        value={field.value} 
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue defaultValue={field.value} />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {resolutionOptions.map((option) => (
-                                                <SelectItem 
-                                                    key={option.value} 
-                                                    value={option.value}
-                                                >
-                                                    {option.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </FormItem>
-                            )}
-                        />                  
+                        />                 
                         <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
                             Generate
                         </Button>

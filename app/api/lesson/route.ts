@@ -7,11 +7,6 @@ const configuration  = new Configuration({
 
 const openai = new OpenAIApi(configuration)
 
-// const instructionMessage: ChatCompletionRequestMessage = {
-//     role: "system",
-//     content: `Write a lesson plan for an introductory algebra class. The lesson plan should cover the distributive law, in particular how it works in simple cases involving mixes of positive and negative numbers. Come up with some examples that show common student errors.`
-// };
-
 
 export async function POST(
     req: Request
