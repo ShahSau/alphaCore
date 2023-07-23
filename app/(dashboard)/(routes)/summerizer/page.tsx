@@ -18,8 +18,8 @@ import { Loader } from "@/components/loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
-
-  
+import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { NextResponse } from "next/server";
 
 const SummerizerPage = () => {
     const router = useRouter()
@@ -48,11 +48,16 @@ const SummerizerPage = () => {
             }
           };
         try {
+            const freeTrial = await checkApiLimit();
+
+            if(!freeTrial) {
+                return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
+            }
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
             const response = await axios.request(options);
             setMessages((current) => [...current, userMessage, {role: "assistant", content: response.data.summary}]);
-            
+            await incrementApiLimit();
             form.reset();
             
         } catch (error) {

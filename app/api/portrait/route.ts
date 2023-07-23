@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import Replicate from "replicate";
-
+import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 
 const replicate = new Replicate({
     auth: process.env.REOLICATE_API_TOKEN || ''
@@ -22,7 +22,11 @@ export async function POST(
     if (!prompt) {
         return new NextResponse("Prompt is required", { status: 400 });
     }
+    const freeTrial = await checkApiLimit();
 
+    if(!freeTrial) {
+        return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
+    }
     const response = await replicate.run(
       "lucataco/realistic-vision-v4.0:eded127fc9f01381b1d26b15e752ce80803263b852760c6bf16e3d70207fef84",
         {
@@ -31,7 +35,7 @@ export async function POST(
           }
         }
       );
-
+      await incrementApiLimit();
     return NextResponse.json(response);
    } catch (error) {
     console.log('[PORTRAIT_ERROR]', error);

@@ -6,14 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
-    Code, ImageIcon, LayoutDashboard, MessageSquare, GraduationCap, Bug, Smile, Hash, Crop,
-    Sun, Headphones,UserCog, ClipboardList,
-     Music, Settings, VideoIcon, Database, Languages, Play, Presentation, HelpCircle, MailPlus, UserSquare2, PersonStanding, Feather, ImageMinus, FileSignature, CopyMinus, Ratio
+    Code, ImageIcon, LayoutDashboard, MessageSquare, GraduationCap, ClipboardList,
+    Music, Settings, VideoIcon, Database, Play, Presentation, HelpCircle, MailPlus, Feather, Ratio
 } from "lucide-react";
 
 const montserrat = Montserrat ({ weight: '600', subsets: ['latin'] });
 
-// import them from constants
 const routes = [
     {
       label: 'Dashboard',
@@ -105,50 +103,7 @@ const routes = [
       icon: Ratio,
       color: "text-pink-700",
       href: '/portrait',
-        },
-      // {
-      //   label: 'Image Restoring',
-      //   icon: Crop,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
-      // {
-      //   label: 'Whisper',
-      //   icon: Headphones,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
-      // {
-      //   label: 'Makeup',
-      //   icon: UserCog,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
-      // {
-      //   label: 'Game Charactor',
-      //   icon: PersonStanding,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
-
-      // {
-      //   label: 'Background remover',
-      //   icon: ImageMinus,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
-      // {
-      //   label: 'Object removal',
-      //   icon: CopyMinus,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
-      // {
-      //   label: 'Color image',
-      //   icon: FileSignature,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
+    },
     {
       label: 'Settings',
       icon: Settings,
