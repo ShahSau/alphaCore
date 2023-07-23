@@ -13,7 +13,7 @@ export async function POST(
    try {
     const { userId } = auth();
     const body = await req.json();
-    const { prompt,amount = 1 } = body;
+    const { prompt} = body;
     
     if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });
@@ -24,18 +24,17 @@ export async function POST(
     }
 
     const response = await replicate.run(
-      "laion-ai/erlich:92fa143ccefeed01534d5d6648bd47796ef06847a6bc55c0e5c5b6975f2dcdfb",
+      "lucataco/realistic-vision-v4.0:eded127fc9f01381b1d26b15e752ce80803263b852760c6bf16e3d70207fef84",
         {
           input: {
-            prompt: prompt,
-            batch_size: parseInt(amount, 10),
+            prompt: `RAW photo, a portrait photo of ${prompt}`,
           }
         }
       );
 
     return NextResponse.json(response);
    } catch (error) {
-    console.log('[LOGO_ERROR]', error);
+    console.log('[PORTRAIT_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });
    } 
 }

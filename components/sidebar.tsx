@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { 
     Code, ImageIcon, LayoutDashboard, MessageSquare, GraduationCap, Bug, Smile, Hash, Crop,
     Sun, Headphones,UserCog, ClipboardList,
-     Music, Settings, VideoIcon, Database, Languages, Play, Presentation, HelpCircle, MailPlus, UserSquare2, PersonStanding, Feather, ImageMinus, FileSignature, CopyMinus
+     Music, Settings, VideoIcon, Database, Languages, Play, Presentation, HelpCircle, MailPlus, UserSquare2, PersonStanding, Feather, ImageMinus, FileSignature, CopyMinus, Ratio
 } from "lucide-react";
 
 const montserrat = Montserrat ({ weight: '600', subsets: ['latin'] });
@@ -42,13 +42,13 @@ const routes = [
     {
       label: 'Video Generation',
       icon: VideoIcon,
-      color: "text-orange-700",
+      color: "text-orange-500",
       href: '/video',
     },
     {
       label: 'Language to SQL',
       icon: Database,
-      color: "text-red-500",
+      color: "text-red-700",
       href: '/sql',
     },
     {
@@ -72,7 +72,7 @@ const routes = [
     {
       label: 'Summarize Text',
       icon: Play,
-      color: "text-orange-700",
+      color: "text-orange-500",
       href: '/summarize',
     },
 
@@ -91,7 +91,7 @@ const routes = [
     {
       label: 'Logo generator',
       icon: Feather,
-      color: "text-red-500",
+      color: "text-red-700",
       href: '/logo',
     },
     {
@@ -100,15 +100,15 @@ const routes = [
       color: "text-green-500",
       href: '/email',
     },
+    {
+      label: 'Portrait Generation',
+      icon: Ratio,
+      color: "text-pink-700",
+      href: '/portrait',
+        },
       // {
       //   label: 'Image Restoring',
       //   icon: Crop,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
-      // {
-      //   label: 'Summarize',
-      //   icon: Sun,
       //   color: "text-sky-700",
       //   href: '/lesson',
       // },
@@ -121,13 +121,6 @@ const routes = [
       // {
       //   label: 'Makeup',
       //   icon: UserCog,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
-
-      // {
-      //   label: 'Profile pic',
-      //   icon: UserSquare2,
       //   color: "text-sky-700",
       //   href: '/lesson',
       // },

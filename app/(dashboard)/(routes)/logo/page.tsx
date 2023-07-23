@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from 'react'
 import Heading from '@/components/heading';
-import { ImageIcon, Download, MoveUpRight } from "lucide-react";
+import { Feather, Download, MoveUpRight } from "lucide-react";
 import {useForm} from "react-hook-form";
 import {formSchema} from './constants' 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Image from "next/image"
 import { amountOptions } from "./constants";
 
-const ImagePage = () => {
+const LogoPage = () => {
     const router = useRouter()
     const [images, setImages] = useState<string[]>([])
 
@@ -38,10 +38,8 @@ const ImagePage = () => {
         try {
             setImages([]);
 
-            const response = await axios.post('/api/image', values);
-            console.log(response)
-            // const urls = response.data.map((image: { url: string }) => image.url);
-            const urls = response.data.map((image:string)=> image);
+            const response = await axios.post('/api/logo', values);
+            const urls = response.data[0].map((image:string)=> image);
             setImages(urls);
             form.reset();
 
@@ -56,11 +54,11 @@ const ImagePage = () => {
 
     <div>
         <Heading 
-            title="Image Generation"
-            description="Turn your promt into an image."
-            icon={ImageIcon}
-            iconColor="text-pink-700"
-            bgColor="bg-pink-700/10"
+            title="Logo Generation"
+            description="Turn your promt into memorable logos."
+            icon={Feather}
+            iconColor="text-red-700"
+            bgColor="bg-red-700/10"
         />
         <div className="px-4 lg:px-8">
             <div>
@@ -80,7 +78,7 @@ const ImagePage = () => {
                                     <Input
                                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                         disabled={isLoading} 
-                                        placeholder="A picture of a horse in Swiss Alps" 
+                                        placeholder="paper plane logo with shadow of plane flying around the world, logo, digital art" 
                                         {...field}
                                     />
                                     </FormControl>
@@ -157,4 +155,4 @@ const ImagePage = () => {
   )
 }
 
-export default ImagePage;
+export default LogoPage;
