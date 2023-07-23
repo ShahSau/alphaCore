@@ -96,8 +96,8 @@ const routes = [
       {
         label: 'Interview Questions',
         icon: HelpCircle,
-        color: "text-sky-700",
-        href: '/lesson',
+        color: "text-violet-500",
+        href: '/interview',
       },
       {
         label: 'Image Restoring',
