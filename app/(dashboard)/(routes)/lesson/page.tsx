@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from 'react'
 import Heading from '@/components/heading';
-import { Database } from "lucide-react";
+import { Presentation } from "lucide-react";
 import {useForm} from "react-hook-form";
 import {formSchema} from './constants' 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 
-const SqlPage = () => {
+const LessonPlannerPage = () => {
     const router = useRouter()
     const [messages, setMessages] =useState<ChatCompletionRequestMessage[]>([])
 
@@ -37,7 +37,7 @@ const SqlPage = () => {
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
             
-            const response = await axios.post('/api/sql', { messages: newMessages });
+            const response = await axios.post('/api/lesson', { messages: newMessages });
             setMessages((current) => [...current, userMessage, response.data]);
 
             form.reset();
@@ -53,11 +53,11 @@ const SqlPage = () => {
 
     <div>
         <Heading 
-            title="Natural language to SQL"
-            description="Convert natural language into SQL queries."
-            icon={Database}
-            iconColor="text-red-700"
-            bgColor="bg-red-700/10"
+            title="Lesson Planner"
+            description="Generate a lesson plan for a specific topic."
+            icon={Presentation}
+            iconColor="text-sky-700"
+            bgColor="bg-sky-700/10"
         />
         <div className="px-4 lg:px-8">
             <div>
@@ -77,7 +77,7 @@ const SqlPage = () => {
                                     <Input
                                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                         disabled={isLoading} 
-                                        placeholder="Write a SQL query which computes the average total order value for all orders on 2023-04-01." 
+                                        placeholder="Write a lesson plan for an introductory algebra class" 
                                         {...field}
                                     />
                                     </FormControl>
@@ -85,7 +85,7 @@ const SqlPage = () => {
                             )}
                         />
                         <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
-                            Generate queries
+                            Create Lesson Plan
                         </Button>
                     </form>
                 </Form>
@@ -97,7 +97,7 @@ const SqlPage = () => {
                     </div>
                 )}
                 {messages.length === 0 && !isLoading && (
-                    <Empty label="No queries generated." />
+                    <Empty label="No conversation started." />
                 )}
                 <div className="flex flex-col-reverse gap-y-4">
                     {messages.map((message)=>(
@@ -109,9 +109,9 @@ const SqlPage = () => {
                           )}
                         >
                             {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                            <div className="text-sm overflow-hidden leading-7 whitespace-pre-wrap">
-                                {message.content || ""}
-                                </div>
+                            <p className="text-sm whitespace-pre-wrap">
+                                 {message.content}
+                            </p>
                         </div>
                     ))}
                 </div>
@@ -121,4 +121,4 @@ const SqlPage = () => {
   )
 }
 
-export default SqlPage;
+export default LessonPlannerPage;

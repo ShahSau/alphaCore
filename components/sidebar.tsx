@@ -6,8 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
-    Code, ImageIcon, LayoutDashboard, MessageSquare, GraduationCap, Bug, Smile, Hash, 
-     Music, Settings, VideoIcon, Database, Languages, Play,
+    Code, ImageIcon, LayoutDashboard, MessageSquare, GraduationCap, Bug, Smile, Hash, Crop,
+    Sun, Headphones,UserCog,
+     Music, Settings, VideoIcon, Database, Languages, Play, Presentation, HelpCircle, MailPlus, UserSquare2, PersonStanding, Feather, ImageMinus, FileSignature, CopyMinus
 } from "lucide-react";
 
 const montserrat = Montserrat ({ weight: '600', subsets: ['latin'] });
@@ -87,10 +88,82 @@ const routes = [
       href: '/code',
     },
     {
-        label: 'Python Bug Fixer',
-        icon: Bug,
-        color: "text-red-700",
-        href: '/python',
+      label: 'Lesson Planner',
+      icon: Presentation,
+      color: "text-sky-700",
+      href: '/lesson',
+    },
+      {
+        label: 'Interview Questions',
+        icon: HelpCircle,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Image Restoring',
+        icon: Crop,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Summarize',
+        icon: Sun,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Whisper',
+        icon: Headphones,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Makeup',
+        icon: UserCog,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Email',
+        icon: MailPlus,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Profile pic',
+        icon: UserSquare2,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Game Charactor',
+        icon: PersonStanding,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Logo generator',
+        icon: Feather,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Background remover',
+        icon: ImageMinus,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Object removal',
+        icon: CopyMinus,
+        color: "text-sky-700",
+        href: '/lesson',
+      },
+      {
+        label: 'Color image',
+        icon: FileSignature,
+        color: "text-sky-700",
+        href: '/lesson',
       },
     {
       label: 'Settings',
@@ -102,7 +175,7 @@ const Sidebar = () => {
 
     const pathname = usePathname();
     return(
-        <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
+        <div className="space-y-4 py-4 flex flex-col overflow-scroll bg-[#111827] text-white">
             <div className="px-3 py-2 flex-1">
                 <Link href="/dashboard" className="flex items-center pl-3 mb-14">
                     <div className="relative w-8 h-8 mr-4">
