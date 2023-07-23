@@ -28,6 +28,12 @@ const routes = [
       color: "text-violet-500",
     },
     {
+      label: 'Music Generation',
+      icon: Music,
+      color: "text-emerald-500",
+      href: '/music',
+    },
+    {
       label: 'Image Generation',
       icon: ImageIcon,
       color: "text-pink-700",
@@ -40,11 +46,11 @@ const routes = [
       href: '/video',
     },
     {
-        label: 'Language to SQL',
-        icon: Database,
-        color: "text-red-700",
-        href: '/sql',
-      },
+      label: 'Language to SQL',
+      icon: Database,
+      color: "text-red-700",
+      href: '/sql',
+    },
     {
     label: 'Grammar Correction',
     icon: GraduationCap,
@@ -52,10 +58,10 @@ const routes = [
     href: '/grammer',
       },
     {
-      label: 'Music Generation',
-      icon: Music,
-      color: "text-emerald-500",
-      href: '/music',
+      label: 'Code Generation',
+      icon: Code,
+      color: "text-green-500",
+      href: '/code',
     },
     {
       label: 'Summarize Text',
@@ -63,12 +69,7 @@ const routes = [
       color: "text-orange-700",
       href: '/summarize',
     },
-    {
-      label: 'Code Generation',
-      icon: Code,
-      color: "text-green-700",
-      href: '/code',
-    },
+
     {
       label: 'Lesson Planner',
       icon: Presentation,
@@ -80,6 +81,18 @@ const routes = [
         icon: HelpCircle,
         color: "text-violet-500",
         href: '/interview',
+      },
+      {
+        label: 'Logo generator',
+        icon: Feather,
+        color: "text-red-500",
+        href: '/logo',
+      },
+      {
+        label: 'Email',
+        icon: MailPlus,
+        color: "text-green-500",
+        href: '/email',
       },
       // {
       //   label: 'Image Restoring',
@@ -105,12 +118,7 @@ const routes = [
       //   color: "text-sky-700",
       //   href: '/lesson',
       // },
-      // {
-      //   label: 'Email',
-      //   icon: MailPlus,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
+
       // {
       //   label: 'Profile pic',
       //   icon: UserSquare2,
@@ -123,12 +131,7 @@ const routes = [
       //   color: "text-sky-700",
       //   href: '/lesson',
       // },
-      // {
-      //   label: 'Logo generator',
-      //   icon: Feather,
-      //   color: "text-sky-700",
-      //   href: '/lesson',
-      // },
+
       // {
       //   label: 'Background remover',
       //   icon: ImageMinus,

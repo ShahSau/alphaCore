@@ -5,6 +5,7 @@ export const formSchema = z.object({
     message: "Photo prompt is required"
   }),
   amount: z.string().min(1),
+  resolution: z.string().min(1),
 });
 
 export const amountOptions = [
@@ -27,5 +28,21 @@ export const amountOptions = [
   {
     value: "5",
     label: "5 Photos"
-  }
+  },
+  {
+    value: "6",
+    label: "6 Photos"
+  },
+  {
+    value: "7",
+    label: "7 Photos"
+  },
+  {
+    value: "8",
+    label: "8 Photos"
+  },
+  {
+    value: "9",
+    label: "9 Photos"
+  },
 ];

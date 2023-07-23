@@ -10,11 +10,12 @@ const replicate = new Replicate({
 export async function POST(
     req: Request
 ){
+  console.log('[MUSIC_REQUEST]', req)
    try {
     const { userId } = auth();
     const body = await req.json();
     const { prompt,amount = 1 } = body;
-    console.log('[LOGO_REQUEST]', body)
+    
     if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -24,18 +25,18 @@ export async function POST(
     }
 
     const response = await replicate.run(
-      "laion-ai/erlich:92fa143ccefeed01534d5d6648bd47796ef06847a6bc55c0e5c5b6975f2dcdfb",
+      "stability-ai/stable-diffusion:ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4",
         {
           input: {
             prompt: prompt,
-            batch_size: parseInt(amount, 10),
+            num_outputs: parseInt(amount, 10),
           }
         }
       );
 
     return NextResponse.json(response);
    } catch (error) {
-    console.log('[LOGO_ERROR]', error);
+    console.log('[MUSIC_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });
    } 
 }
