@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
     Code, ImageIcon, LayoutDashboard, MessageSquare, GraduationCap, Bug, Smile, Hash, Crop,
-    Sun, Headphones,UserCog,
+    Sun, Headphones,UserCog, ClipboardList,
      Music, Settings, VideoIcon, Database, Languages, Play, Presentation, HelpCircle, MailPlus, UserSquare2, PersonStanding, Feather, ImageMinus, FileSignature, CopyMinus
 } from "lucide-react";
 
@@ -30,7 +30,7 @@ const routes = [
     {
       label: 'Music Generation',
       icon: Music,
-      color: "text-emerald-500",
+      color: "text-emerald-700", 
       href: '/music',
     },
     {
@@ -48,8 +48,14 @@ const routes = [
     {
       label: 'Language to SQL',
       icon: Database,
-      color: "text-red-700",
+      color: "text-red-500",
       href: '/sql',
+    },
+    {
+      label: 'Summerizer',
+      icon: ClipboardList,
+      color: "text-emerald-700",
+      href: '/summerizer',
     },
     {
     label: 'Grammar Correction',
@@ -73,27 +79,27 @@ const routes = [
     {
       label: 'Lesson Planner',
       icon: Presentation,
-      color: "text-sky-700",
+      color: "text-sky-500",
       href: '/lesson',
     },
-      {
-        label: 'Interview Questions',
-        icon: HelpCircle,
-        color: "text-violet-500",
-        href: '/interview',
-      },
-      {
-        label: 'Logo generator',
-        icon: Feather,
-        color: "text-red-500",
-        href: '/logo',
-      },
-      {
-        label: 'Email',
-        icon: MailPlus,
-        color: "text-green-500",
-        href: '/email',
-      },
+    {
+      label: 'Interview Questions',
+      icon: HelpCircle,
+      color: "text-violet-500",
+      href: '/interview',
+    },
+    {
+      label: 'Logo generator',
+      icon: Feather,
+      color: "text-red-500",
+      href: '/logo',
+    },
+    {
+      label: 'Email',
+      icon: MailPlus,
+      color: "text-green-500",
+      href: '/email',
+    },
       // {
       //   label: 'Image Restoring',
       //   icon: Crop,
