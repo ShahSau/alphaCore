@@ -20,9 +20,11 @@ import { ChatCompletionRequestMessage } from "openai";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import { cn } from "@/lib/utils";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const EamilPage = () => {
     const router = useRouter()
+    const proModal = useProModal();
     const [email, setEmail] = useState<ChatCompletionRequestMessage[]>([])
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -48,8 +50,12 @@ const EamilPage = () => {
             setEmail((current) => [...current, userMessage, response.data]);
             
             form.reset();
-        } catch (error) {
-            console.error(error)
+        } catch (error:any) {
+            if(error?.response?.status === 403){
+                proModal.onOpen()
+            }else{
+                console.error(error)
+            }
         }finally{
             router.refresh()
         }

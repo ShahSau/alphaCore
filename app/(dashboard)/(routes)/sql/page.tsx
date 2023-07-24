@@ -18,9 +18,11 @@ import { Loader } from "@/components/loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const SqlPage = () => {
     const router = useRouter()
+    const proModal = useProModal();
     const [messages, setMessages] =useState<ChatCompletionRequestMessage[]>([])
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -42,8 +44,12 @@ const SqlPage = () => {
 
             form.reset();
 
-        } catch (error) {
-            console.error(error)
+        } catch (error:any) {
+            if(error?.response?.status === 403){
+                proModal.onOpen()
+            }else{
+                console.error(error)
+            }
         }finally{
             router.refresh()
         }
