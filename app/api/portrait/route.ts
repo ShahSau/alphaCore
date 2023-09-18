@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import Replicate from "replicate";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const replicate = new Replicate({
     auth: process.env.REOLICATE_API_TOKEN || ''
@@ -23,8 +24,9 @@ export async function POST(
         return new NextResponse("Prompt is required", { status: 400 });
     }
     const freeTrial = await checkApiLimit();
+    const isPro = await checkSubscription();
 
-    if(!freeTrial) {
+    if(!freeTrial && !isPro) {
         return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
     }
     const response = await replicate.run(
@@ -35,7 +37,10 @@ export async function POST(
           }
         }
       );
-      await incrementApiLimit();
+    
+    if(!isPro){
+        await incrementApiLimit();
+    }
     return NextResponse.json(response);
    } catch (error) {
     console.log('[PORTRAIT_ERROR]', error);

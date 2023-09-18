@@ -29,8 +29,8 @@ export const tools = [
   {
     label: 'Video Generation',
     icon: VideoIcon,
-    color: "text-orange-700",
-    bgColor: "bg-orange-700/10",
+    color: "text-orange-500",
+    bgColor: "bg-orange-500/10",
     href: '/video',
   },
   {

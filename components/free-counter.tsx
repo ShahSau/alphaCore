@@ -11,8 +11,10 @@ import { useProModal } from "@/hooks/use-pro-modal";
 
 export const FreeCounter = ({
   apiLimitCount = 0,
+  isPro = false,
 }: {
-  apiLimitCount: number
+  apiLimitCount: number,
+  isPro: boolean,
 }) => {
     // to prevent hydration mismatch
   const [mounted, setMounted] = useState(false);
@@ -23,6 +25,10 @@ export const FreeCounter = ({
   }, []);
 
   if (!mounted) {
+    return null;
+  }
+
+  if (isPro) {
     return null;
   }
 
