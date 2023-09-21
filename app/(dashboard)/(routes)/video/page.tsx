@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import {Empty} from "@/components/empty"
 import { Loader } from "@/components/loader";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 
 const VideoPage = () => {
     const router = useRouter()
@@ -45,6 +46,7 @@ const VideoPage = () => {
                 proModal.onOpen()
             }else{
                 console.error(error)
+                toast.error("Something went wrong. Please try again.")
             }
         }finally{
             router.refresh()

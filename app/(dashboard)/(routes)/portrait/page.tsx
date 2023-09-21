@@ -17,6 +17,7 @@ import { Loader } from "@/components/loader";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image"
 import { useProModal } from "@/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 const PortraitPage = () => {
     const router = useRouter()
     const proModal = useProModal();
@@ -44,6 +45,7 @@ const PortraitPage = () => {
                 proModal.onOpen()
             }else{
                 console.error(error)
+                toast.error("Something went wrong. Please try again.")
             }
         }finally{
             router.refresh()

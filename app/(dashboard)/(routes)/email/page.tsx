@@ -21,6 +21,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import { cn } from "@/lib/utils";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 
 const EamilPage = () => {
     const router = useRouter()
@@ -55,6 +56,7 @@ const EamilPage = () => {
                 proModal.onOpen()
             }else{
                 console.error(error)
+                toast.error("Something went wrong. Please try again.")
             }
         }finally{
             router.refresh()

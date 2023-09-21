@@ -34,8 +34,8 @@ export const MobileSidebar = ({
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="p-0">
-        <Sidebar apiLimitCount={apiLimitCount} isPro={isPro} />
+      <SheetContent side="left" className="p-0 overflow-scroll bg-[#111827]" >
+        <Sidebar apiLimitCount={apiLimitCount} isPro={isPro} /> 
       </SheetContent>
     </Sheet>
   );

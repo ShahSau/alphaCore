@@ -123,9 +123,6 @@ const Sidebar = ({apiLimitCount=0, isPro=false}:SidebarProps) => {
         <div className="space-y-4 py-2 flex flex-col overflow-scroll bg-[#111827] text-white">
             <div className="px-3 py-1 flex-1">
                 <Link href="/dashboard" className="flex items-center pl-3 mb-14">
-                    <div className="relative w-8 h-8 mr-4">
-                        <Image src="/copy.png"  alt="logo" fill/>
-                    </div>
                     <h1 className={cn("text-lg font-bold", montserrat.className)}>alphaCore</h1>
                 </Link>
                 <div className="">
