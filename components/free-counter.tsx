@@ -1,13 +1,14 @@
 "use client";
 
+import axios from "axios";
 import { useEffect, useState } from "react";
-
 import { MAX_FREE_COUNTS } from "@/constants";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 
 export const FreeCounter = ({
   apiLimitCount = 0,
@@ -18,7 +19,22 @@ export const FreeCounter = ({
 }) => {
     // to prevent hydration mismatch
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const proModal = useProModal();
+
+  const onClick = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.get("/api/stripe");
+
+      window.location.href = response.data.url;
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -29,7 +45,22 @@ export const FreeCounter = ({
   }
 
   if (isPro) {
-    return null;
+    return (
+      <div className="px-3">
+      <Card className="bg-white/10 border-0">
+        <CardContent className="py-6">
+          <div className="text-center text-sm text-white mb-4 space-y-2">
+            <p>
+              You have upgraded to pro plan
+            </p>
+          </div>
+          <Button onClick={onClick} variant="premium" className="w-full">
+            Manage Subscription
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+    )
   }
 
   return (
