@@ -91,7 +91,7 @@ const EamilPage = () => {
                                     <Input
                                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                         disabled={isLoading} 
-                                        placeholder="Clown fish swiming around a coral reef" 
+                                        placeholder=" I am writing to propose a new marketing campaign that I believe will be effective for your business." 
                                         {...field}
                                     />
                                     </FormControl>

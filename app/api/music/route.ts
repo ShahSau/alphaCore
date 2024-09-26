@@ -5,7 +5,7 @@ import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
 
 const replicate = new Replicate({
-    auth: process.env.REOLICATE_API_TOKEN || ''
+    auth: 'r8_2ic9eNAc9txIPsb9kktgpotfQwARYKF3HOShR'
 });
 
 export async function POST(
@@ -42,6 +42,7 @@ export async function POST(
     if(!isPro){
         await incrementApiLimit();
     }
+    console.log(response,"sjsjsjjsj");
     return NextResponse.json(response);
    } catch (error) {
     console.log('[MUSIC_ERROR]', error);
