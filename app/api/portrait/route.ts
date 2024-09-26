@@ -41,8 +41,9 @@ export async function POST(
       })
     };
     const response = await fetch(url, options);
-    const data = await response.text();
+    const res = await response.text();
 
+    const data = JSON.parse(res)
     if(!isPro){
         await incrementApiLimit();
     }

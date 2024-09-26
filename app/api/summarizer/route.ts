@@ -1,19 +1,7 @@
-import { Configuration, OpenAIApi,ChatCompletionRequestMessage } from "openai";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
-
-const configuration  = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-})
-
-const openai = new OpenAIApi(configuration)
-
-const instructionMessage: ChatCompletionRequestMessage = {
-    role: "system",
-    content: "Summarize content you are provided with for a second-grade student."
-};
 
 
 export async function POST(
@@ -22,19 +10,21 @@ export async function POST(
    try {
     const { userId } = auth();
     const body = await req.json();
-    const { messages  } = body;
+    const { messages, lang  } = body;
     
     if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!configuration.apiKey) {
-        return new NextResponse("OpenAI API Key not configured.", { status: 500 });
-    }
 
     if (!messages) {
         return new NextResponse("Messages are required", { status: 400 });
     }
+
+    if(!lang){
+        return new NextResponse("Language is required", { status: 400 });
+    }
+
     const freeTrial = await checkApiLimit();
     const isPro = await checkSubscription();
 
@@ -42,15 +32,29 @@ export async function POST(
         return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
     }
 
-    const response = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages:[instructionMessage, ...messages]
-      });
+    const url = 'https://article-extractor-and-summarizer.p.rapidapi.com/summarize-text';
+    
+    const options = {
+    method: 'POST',
+    headers: {
+        'x-rapidapi-key': process.env.NEXT_PROTRAIT_API_KEY || '',
+        'x-rapidapi-host': 'article-extractor-and-summarizer.p.rapidapi.com',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        lang: lang,
+        text: messages
+    })
+    };
+
+    const response = await fetch(url, options);
+    const res = await response.text();
+    const data = JSON.parse(res);
     
     if(!isPro){
         await incrementApiLimit();
     }
-     return NextResponse.json(response.data.choices[0].message);
+     return NextResponse.json(data.summary);
    } catch (error) {
     console.log('[SUMMARIZE_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });

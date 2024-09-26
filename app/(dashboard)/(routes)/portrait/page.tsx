@@ -35,11 +35,9 @@ const PortraitPage = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             setImages("");
-
+            form.setValue("prompt", "");
             const response = await axios.post('/api/portrait', values);
-            const str =response.data.split('":"')[1]
-            setImages(str.split('"')[0])
-            
+            setImages(response.data.generated_image);
             form.reset();
 
         } catch (error:any) {

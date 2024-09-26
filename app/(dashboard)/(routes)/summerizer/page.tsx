@@ -5,9 +5,10 @@ import React, { useState } from 'react'
 import Heading from '@/components/heading';
 import { ClipboardList } from "lucide-react";
 import {useForm} from "react-hook-form";
-import {formSchema} from './constants' 
+import {formSchema,languageOptions} from './constants' 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from 'axios';
@@ -31,36 +32,21 @@ const SummerizerPage = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
-            prompt: ""
+            prompt: "",
+            lang: "en",
         }
     });
 
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        const options = {
-            method: 'GET',
-            url: 'https://article-extractor-and-summarizer.p.rapidapi.com/summarize',
-            params: {
-              url: `${values.prompt}`,
-              length: '3'
-            },
-            headers: {
-              'X-RapidAPI-Key': '09cfa80fdfmshfab9bb2e6524034p10409ejsn8327b13fb216',
-              'X-RapidAPI-Host': 'article-extractor-and-summarizer.p.rapidapi.com'
-            }
-          };
         try {
-            const freeTrial = await checkApiLimit();
-
-            if(!freeTrial) {
-                return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
-            }
+            form.setValue("prompt", "");
             const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
-            const response = await axios.request(options);
-            setMessages((current) => [...current, userMessage, {role: "assistant", content: response.data.summary}]);
-            await incrementApiLimit();
+            const resposne = await axios.post('/api/summarizer', {messages: values.prompt, lang: values.lang});
+
+            setMessages((current) => [...current, {role: "user", content: values.prompt}, {role: "assistant", content: resposne.data}]);
             form.reset();
             
         } catch (error:any) {
@@ -76,7 +62,6 @@ const SummerizerPage = () => {
     };
 
   return (
-
     <div>
         <Heading 
             title="Summerizer"
@@ -87,7 +72,7 @@ const SummerizerPage = () => {
         />
         <div className="px-4 lg:px-8">
             <div>
-                <Form {...form}>
+            <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="
@@ -98,20 +83,51 @@ const SummerizerPage = () => {
                         <FormField
                             name="prompt"
                             render={({ field }) => (
-                                <FormItem className="col-span-12 lg:col-span-10">
+                                <FormItem className="col-span-12 lg:col-span-7">
                                     <FormControl className="m-0 p-0">
                                     <Input
                                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                         disabled={isLoading} 
-                                        placeholder="Enter the url of the article" 
+                                        placeholder="
+                                        Jupiter is the fifth planet from the Sun and the largest sol...." 
                                         {...field}
                                     />
                                     </FormControl>
                                  </FormItem>
                             )}
                         />
+                        <FormField
+                            control={form.control}
+                            name="lang"
+                            render={({ field }) => (
+                                <FormItem className="col-span-12 lg:col-span-3">
+                                    <Select 
+                                        disabled={isLoading} 
+                                        onValueChange={field.onChange} 
+                                        value={field.value} 
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue defaultValue={field.value} />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {languageOptions.map((option) => (
+                                                <SelectItem 
+                                                    key={option.value} 
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormItem>
+                            )}
+                        />
                         <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
-                            Summerize
+                            Summarize Text
                         </Button>
                     </form>
                 </Form>
