@@ -37,7 +37,9 @@ const PortraitPage = () => {
             setImages("");
 
             const response = await axios.post('/api/portrait', values);
-            setImages(response.data);
+            const str =response.data.split('":"')[1]
+            setImages(str.split('"')[0])
+            
             form.reset();
 
         } catch (error:any) {
@@ -53,7 +55,6 @@ const PortraitPage = () => {
     };
 
   return (
-
     <div>
         <Heading 
             title="Portrait Generation"
@@ -99,17 +100,15 @@ const PortraitPage = () => {
                         <Loader />
                     </div>
                 )}
-                {images.length === 0 && !isLoading && (
-                    <Empty label="No images are generated." />
-                )}
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-8">
-                {images !== "" && (
+                {images !== "" && !isLoading && (
                     <Card key={images} className="rounded-lg overflow-hidden">
                         <div className="relative aspect-square">
                             <Image
                                 fill
                                 alt="Generated"
                                 src={images}
+                                sizes="512px"
                             />
                         </div>
                         <CardFooter className="p-2">

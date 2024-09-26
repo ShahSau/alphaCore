@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import Replicate from "replicate";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
 
-const replicate = new Replicate({
-    auth: process.env.REOLICATE_API_TOKEN || ''
-});
 
 export async function POST(
     req: Request
@@ -29,19 +25,28 @@ export async function POST(
     if(!freeTrial && !isPro) {
         return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
     }
-    const response = await replicate.run(
-      "lucataco/realistic-vision-v4.0:eded127fc9f01381b1d26b15e752ce80803263b852760c6bf16e3d70207fef84",
-        {
-          input: {
-            prompt: `RAW photo, a portrait photo of ${prompt}`,
-          }
-        }
-      );
-    
+
+    const url = 'https://chatgpt-42.p.rapidapi.com/texttoimage';
+    const options = {
+      method: 'POST',
+      headers: {
+        'x-rapidapi-key': process.env.NEXT_PROTRAIT_API_KEY || '',
+        'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          text: `create a portrait of ${prompt}`,
+          width: 512,
+          height: 512
+      })
+    };
+    const response = await fetch(url, options);
+    const data = await response.text();
+
     if(!isPro){
         await incrementApiLimit();
     }
-    return NextResponse.json(response);
+    return NextResponse.json(data);
    } catch (error) {
     console.log('[PORTRAIT_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });

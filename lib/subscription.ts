@@ -11,25 +11,18 @@ export const checkSubscription = async () => {
     return false;
   }
 
-  // const userSubscription = await prismadb.userSubscription.findUnique({
-  //   where: {
-  //     userId: userId,
-  //   },
-  //   select: {
-  //     stripeSubscriptionId: true,
-  //     stripeCurrentPeriodEnd: true,
-  //     stripeCustomerId: true,
-  //     stripePriceId: true,
-  //   },
-  // })
-  const userSubscription = {
-    id: 1,
-    userId: userId,
-    stripeSubscriptionId: "sub_123",
-    stripeCurrentPeriodEnd: new Date(),
-    stripeCustomerId: "cus_123",
-    stripePriceId: "price_123",
-  }
+  const userSubscription = await prismadb.userSubscription.findUnique({
+    where: {
+      userId: userId,
+    },
+    select: {
+      stripeSubscriptionId: true,
+      stripeCurrentPeriodEnd: true,
+      stripeCustomerId: true,
+      stripePriceId: true,
+    },
+  })
+
 
   if (!userSubscription) {
     return false;
