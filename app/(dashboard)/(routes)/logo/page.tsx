@@ -15,35 +15,31 @@ import { useRouter } from "next/navigation";
 import {Empty} from "@/components/empty"
 import { Loader } from "@/components/loader";
 import { Card, CardFooter } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Image from "next/image"
-import { amountOptions } from "./constants";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 
 const LogoPage = () => {
     const router = useRouter()
     const proModal = useProModal();
-    const [images, setImages] = useState<string[]>([])
+    const [images, setImages] = useState<string>("")
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
-            prompt: "",
-            amount: "1",
+            prompt: ""
         }
     });
 
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values)
         try {
-            setImages([]);
+            setImages("");
 
             const response = await axios.post('/api/logo', values);
-            const urls = response.data[0].map((image:string)=> image);
-            setImages(urls);
+            console.log(response,"FFFFFFF")
+            setImages(response.data.generated_image);
             form.reset();
 
         } catch (error:any) {
@@ -81,48 +77,19 @@ const LogoPage = () => {
                         <FormField
                             name="prompt"
                             render={({ field }) => (
-                                <FormItem className="col-span-12 lg:col-span-6">
+                                <FormItem className="col-span-12 lg:col-span-9">
                                     <FormControl className="m-0 p-0">
                                     <Input
                                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                         disabled={isLoading} 
-                                        placeholder="paper plane logo with shadow of plane flying around the world, logo, digital art" 
+                                        placeholder="paper plane logo with shadow of plane flying around the world" 
                                         {...field}
                                     />
                                     </FormControl>
                                 </FormItem>
                             )}
                         />
-                         <FormField
-                            control={form.control}
-                            name="amount"
-                            render={({ field }) => (
-                                <FormItem className="col-span-12 lg:col-span-3">
-                                    <Select 
-                                        disabled={isLoading} 
-                                        onValueChange={field.onChange} 
-                                        value={field.value} 
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue defaultValue={field.value} />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {amountOptions.map((option) => (
-                                                <SelectItem 
-                                                    key={option.value} 
-                                                    value={option.value}
-                                                >
-                                                    {option.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </FormItem>
-                            )}
-                        />                 
+                                        
                         <Button className="col-span-12 lg:col-span-3 w-full" type="submit" disabled={isLoading} size="icon">
                             Generate
                         </Button>
@@ -135,27 +102,24 @@ const LogoPage = () => {
                         <Loader />
                     </div>
                 )}
-                {images.length === 0 && !isLoading && (
-                    <Empty label="No images are generated." />
-                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-                {images.map((src) => (
-                    <Card key={src} className="rounded-lg overflow-hidden">
+                {images !== "" && !isLoading && (
+                    <Card key={images} className="rounded-lg overflow-hidden">
                     <div className="relative aspect-square">
                         <Image
                             fill
                             alt="Generated"
-                            src={src}
+                            src={images}
                         />
                     </div>
                     <CardFooter className="p-2">
-                        <Button onClick={() => window.open(src)} variant="secondary" className="w-full">
+                        <Button onClick={() => window.open(images)} variant="secondary" className="w-full">
                         Open
                         <MoveUpRight className="h-4 w-4 mr-2" />
                         </Button>
                     </CardFooter>
                     </Card>
-          ))}
+                )}
                 </div>
             </div>
         </div>

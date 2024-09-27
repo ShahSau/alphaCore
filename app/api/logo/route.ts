@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import Replicate from "replicate";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
 
-const replicate = new Replicate({
-    auth: process.env.REOLICATE_API_TOKEN || ''
-});
+
 
 export async function POST(
     req: Request
@@ -14,7 +11,7 @@ export async function POST(
    try {
     const { userId } = auth();
     const body = await req.json();
-    const { prompt,amount = 1 } = body;
+    const { prompt } = body;
     
     if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });
@@ -30,20 +27,30 @@ export async function POST(
     if(!freeTrial && !isPro) {
         return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
     }
-    const response = await replicate.run(
-      "laion-ai/erlich:92fa143ccefeed01534d5d6648bd47796ef06847a6bc55c0e5c5b6975f2dcdfb",
-        {
-          input: {
-            prompt: prompt,
-            batch_size: parseInt(amount, 10),
-          }
-        }
-      );
+    
+    const url = 'https://chatgpt-42.p.rapidapi.com/texttoimage';
+    const options = {
+      method: 'POST',
+      headers: {
+        'x-rapidapi-key': process.env.NEXT_PROTRAIT_API_KEY || '',
+        'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          text: `create a logo for ${prompt}`,
+          width: 512,
+          height: 512
+      })
+    };
+    const response = await fetch(url, options);
+    const res = await response.text();
+
+    const data = JSON.parse(res)
     
     if(!isPro){
         await incrementApiLimit();
     }
-    return NextResponse.json(response);
+    return NextResponse.json(data);
    } catch (error) {
     console.log('[LOGO_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });
