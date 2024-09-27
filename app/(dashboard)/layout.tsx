@@ -8,7 +8,6 @@ const DashboardLayout = async ({
     children: React.ReactNode
   }) => {
     const apiLimitCount = await getApiLimitCount();
-    console.log(apiLimitCount);
     const isPro = await checkSubscription();
     return(
       <div className="h-full relative">
