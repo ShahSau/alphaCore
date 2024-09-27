@@ -1,4 +1,4 @@
-import { Code, ImageIcon, MessageSquare, Music, Database, VideoIcon,
+import { Code, ImageIcon, MessageSquare, Database,
   ClipboardList, GraduationCap, Sigma, Presentation, HelpCircle, Feather, MailPlus, Ratio
 } from "lucide-react";
 

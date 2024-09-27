@@ -63,6 +63,8 @@ export const FreeCounter = ({
     )
   }
 
+  
+
   return (
     <div className="px-3">
       <Card className="bg-white/10 border-0">
@@ -71,7 +73,7 @@ export const FreeCounter = ({
             <p>
               {apiLimitCount} / {MAX_FREE_COUNTS} Free Generations
             </p>
-            <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} />
+            {/* <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} /> */}
           </div>
           <Button onClick={proModal.onOpen} variant="premium" className="w-full">
             Upgrade
