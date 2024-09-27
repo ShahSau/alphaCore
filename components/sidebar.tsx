@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
     Code, ImageIcon, LayoutDashboard, MessageSquare, GraduationCap, ClipboardList,
-    Music, Settings, VideoIcon, Database, Play, Presentation, HelpCircle, MailPlus, Feather, Ratio
+    Music, Settings, VideoIcon, Database, Sigma, Presentation, HelpCircle, MailPlus, Feather, Ratio
 } from "lucide-react";
 import { FreeCounter } from "./free-counter";
 
@@ -27,22 +27,10 @@ const routes = [
       color: "text-violet-500",
     },
     {
-      label: 'Music Generation',
-      icon: Music,
-      color: "text-emerald-700", 
-      href: '/music',
-    },
-    {
       label: 'Image Generation',
       icon: ImageIcon,
       color: "text-pink-700",
       href: '/image',
-    },
-    {
-      label: 'Video Generation',
-      icon: VideoIcon,
-      color: "text-orange-500",
-      href: '/video',
     },
     {
       label: 'Language to SQL',
@@ -69,10 +57,12 @@ const routes = [
       href: '/code',
     },
     {
-      label: 'Summarize Text',
-      icon: Play,
+      label: 'Article Summery',
+      icon: Sigma,
       color: "text-orange-500",
-      href: '/summarize',
+      bgColor: "bg-orange-500/10",
+      href: '/article',
+      modelName:"Article"
     },
 
     {
@@ -125,7 +115,7 @@ const Sidebar = ({apiLimitCount=0, isPro=false}:SidebarProps) => {
                 <Link href="/dashboard" className="flex items-center pl-3 mb-14">
                     <h1 className={cn("text-lg font-bold", montserrat.className)}>alphaCore</h1>
                 </Link>
-                <div className="">
+                <div className="pb-16">
                     {routes.map((route, i) => (
                         <Link 
                             href={route.href} 

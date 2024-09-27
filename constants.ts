@@ -1,5 +1,5 @@
 import { Code, ImageIcon, MessageSquare, Music, Database, VideoIcon,
-  ClipboardList, GraduationCap, Play, Presentation, HelpCircle, Feather, MailPlus, Ratio
+  ClipboardList, GraduationCap, Sigma, Presentation, HelpCircle, Feather, MailPlus, Ratio
 } from "lucide-react";
 
 export const MAX_FREE_COUNTS = 5;
@@ -11,13 +11,7 @@ export const tools = [
     href: '/conversation',
     color: "text-violet-500",
     bgColor: "bg-violet-500/10",
-  },
-  {
-    label: 'Music Generation',
-    icon: Music,
-    href: '/music',
-    color: "text-emerald-700",
-    bgColor: "bg-emerald-700/10",
+    modelName:"Chat"
   },
   {
     label: 'Image Generation',
@@ -25,13 +19,7 @@ export const tools = [
     color: "text-pink-700",
     bgColor: "bg-pink-700/10",
     href: '/image',
-  },
-  {
-    label: 'Video Generation',
-    icon: VideoIcon,
-    color: "text-orange-500",
-    bgColor: "bg-orange-500/10",
-    href: '/video',
+    modelName:"Image"
   },
   {
     label: 'Language to SQL',
@@ -39,6 +27,7 @@ export const tools = [
     color: "text-red-700",
     bgColor: "bg-red-700/10",
     href: '/sql',
+    modelName:"SQL"
   },
   {
     label: 'Summerizer',
@@ -46,6 +35,7 @@ export const tools = [
     color: "text-emerald-700",
     bgColor: "bg-emerald-700/10",
     href: '/summerizer',
+    modelName:"Summery"
   },
   {
     label: 'Grammar Correction',
@@ -53,6 +43,7 @@ export const tools = [
     color: "text-pink-700",
     bgColor: "bg-pink-700/10",
     href: '/grammer',
+    modelName:"Grammar"
       },
   {
     label: 'Code Generation',
@@ -60,13 +51,15 @@ export const tools = [
     color: "text-green-700",
     bgColor: "bg-green-700/10",
     href: '/code',
+    modelName:"Code"
   },
   {
-    label: 'Summarize Text',
-    icon: Play,
+    label: 'Article Summery',
+    icon: Sigma,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
-    href: '/summarize',
+    href: '/article',
+    modelName:"Article"
   },
 
   {
@@ -75,6 +68,7 @@ export const tools = [
     color: "text-sky-500",
     bgColor: "bg-sky-500/10",
     href: '/lesson',
+    modelName:"Lesson"
   },
   {
     label: 'Interview Questions',
@@ -82,6 +76,7 @@ export const tools = [
     color: "text-violet-500",
     bgColor: "bg-violet-500/10",
     href: '/interview',
+    modelName:"Interview"
   },
   {
     label: 'Logo generator',
@@ -89,6 +84,7 @@ export const tools = [
     color: "text-red-700",
     bgColor: "bg-red-700/10",
     href: '/logo',
+    modelName:"Logo"
   },
   {
     label: 'Email',
@@ -96,6 +92,7 @@ export const tools = [
     color: "text-green-500",
     bgColor: "bg-green-500/10",
     href: '/email',
+    modelName:"Email"
   },
   {
     label: 'Portrait Generation',
@@ -103,6 +100,7 @@ export const tools = [
     color: "text-pink-700",
     bgColor: "bg-pink-700/10",
     href: '/portrait',
+    modelName:"Portrait"
   },
   
 ];
