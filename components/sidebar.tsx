@@ -2,12 +2,11 @@
 
 import { cn } from "@/lib/utils";
 import { Montserrat } from "next/font/google";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
     Code, ImageIcon, LayoutDashboard, MessageSquare, GraduationCap, ClipboardList,
-    Music, Settings, VideoIcon, Database, Sigma, Presentation, HelpCircle, MailPlus, Feather, Ratio
+    Settings, Database, Sigma, Presentation, HelpCircle, MailPlus, Feather, Ratio
 } from "lucide-react";
 import { FreeCounter } from "./free-counter";
 
