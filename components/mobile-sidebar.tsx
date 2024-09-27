@@ -30,9 +30,7 @@ export const MobileSidebar = ({
   return (
     <Sheet>
       <SheetTrigger>
-        <Button variant="ghost" size="icon" className="md:hidden">
-          <Menu />
-        </Button>
+        <Menu className="w-6 h-6 md:hidden"/>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 overflow-scroll bg-[#111827]" >
         <Sidebar apiLimitCount={apiLimitCount} isPro={isPro} /> 
