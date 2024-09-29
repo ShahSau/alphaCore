@@ -280,7 +280,7 @@ npm install
 ```
 
 ### 🤖 Running turbo
-Create an .env file and create the following keys: <br />
+Create an .env file with following keys: <br />
 `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`<br />
 `CLERK_SECRET_KEY`<br />
 `NEXT_PUBLIC_CLERK_SIGN_IN_URL`<br />
