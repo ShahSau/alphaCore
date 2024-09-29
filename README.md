@@ -279,7 +279,7 @@ cd alphaCore
 npm install
 ```
 
-### 🤖 Running turbo
+### 🤖 Running alphaCore
 Create an .env file with following keys: <br />
 `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`<br />
 `CLERK_SECRET_KEY`<br />
@@ -297,7 +297,7 @@ Create an .env file with following keys: <br />
 `NEXT_PROTRAIT_API_KEY`<br />
 `DATABASE_URL`
 
-Use the following command to run turbo:
+Use the following command to run alphaCore:
 
 ```sh
 npm run dev
