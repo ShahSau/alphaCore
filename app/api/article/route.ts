@@ -52,7 +52,6 @@ export async function POST(
     }
      return NextResponse.json(data.summary);
    } catch (error) {
-    console.log('[SUMMARIZE_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });
    } 
 }

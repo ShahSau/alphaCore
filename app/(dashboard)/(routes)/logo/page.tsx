@@ -38,7 +38,6 @@ const LogoPage = () => {
             setImages("");
 
             const response = await axios.post('/api/logo', values);
-            console.log(response,"FFFFFFF")
             setImages(response.data.generated_image);
             form.reset();
 
