@@ -250,41 +250,68 @@ Facilitate convenient periodic payments for subscriptions or services through St
 ```
 
 ---
+## 🚀 Getting Started
 
-## 🧩 Modules
+***Requirements***
 
-<details closed><summary>.</summary>
+Ensure you have the following dependencies installed on your system:
 
-| File                                                                                  | Summary                                                                                                                                                                                                                     |
-| ---                                                                                   | ---                                                                                                                                                                                                                         |
-| [middleware.ts](https://github.com/ShahSau/alphaCore/blob/master/middleware.ts)           | Clerk middleware         |
-| [tailwind.config.js](https://github.com/ShahSau/alphaCore/blob/master/tailwind.config.js) | TailwindCSS config file |
-| [tsconfig.json](https://github.com/ShahSau/alphaCore/blob/master/tsconfig.json)           | Typescript config file      |
-| [constants.ts](https://github.com/ShahSau/alphaCore/blob/master/tsconfig.json)           | List of all the possible features      |
-| [components.json](https://github.com/ShahSau/alphaCore/blob/master/tsconfig.json)           | shadcn config     |
+* **node**: `version >= 18.0.0`
+* **react**: `version >=18.2.0`
+
+### ⚙️ Installation
+
+1. Clone the turbo repository:
+
+```sh
+git clone https://github.com/ShahSau/alphaCore
+```
+
+2. Change to the project directory:
+
+```sh
+cd alphaCore
+```
+
+3. Install the dependencies:
+
+```sh
+npm install
+```
+
+### 🤖 Running turbo
+Create an .env file and create the following keys: <br />
+`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`<br />
+`CLERK_SECRET_KEY`<br />
+`NEXT_PUBLIC_CLERK_SIGN_IN_URL`<br />
+`NEXT_PUBLIC_CLERK_SIGN_UP_URL`<br />
+`NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL`<br />
+`NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL`<br />
+`OPENAI_API_KEY`<br />
+`REOLICATE_API_TOKEN`<br />
+`RapidAPI_Key`<br />
+`RapidAPI_Host`<br />
+`STRIPE_API_KEY`<br />
+`NEXT_PUBLIC_APP_URL`<br />
+`STRIPE_WEBHOOK_SECRET`<br />
+`NEXT_PROTRAIT_API_KEY`<br />
+`DATABASE_URL`
+
+Use the following command to run turbo:
+
+```sh
+npm run dev
+```
+
+---
+
+## 🛠 Project Roadmap
+
+- [ ] `►  Add more AI features like resumebuild, chat`
 
 
-</details>
+---
 
-<details closed><summary>lib</summary>
+## 📄 License
 
-| File                                                                                  | Summary                                                                                                                                                                                                                     |
-| ---                                                                                   | ---                                                                                                                                                                                                                         |
-| [api-limit.ts](https://github.com/ShahSau/alphaCore/blob/master/lib/api-limit.ts)           | Functionalities realted to feature uses limit        |
-| [prismadb.ts](https://github.com/ShahSau/alphaCore/blob/master/lib/prismadb) | Prisma client |
-| [stripe.ts](https://github.com/ShahSau/alphaCore/blob/master/lib/stripe.ts)           | Typescript config file      |
-| [subscription.ts](https://github.com/ShahSau/alphaCore/blob/master/lib/subscription.ts)           | User subscription      |
-| [utils.ts](https://github.com/ShahSau/alphaCore/blob/master/lib/utils.ts)           | tailwind classname merge and absolute url path    |
-
-</details>
-
-<details closed><summary>hooks</summary>
-
-| File                                                                                  | Summary                                                                                                                                                                                                                     |
-| ---                                                                                   | ---                                                                                                                                                                                                                         |
-| [use-pro-modal.ts](https://github.com/ShahSau/alphaCore/blob/master/hooks/use-pro-modal.ts)           | user pro modal open and close funtionalities       |
-
-</details>
-
-
-
+This project is protected under the MIT License. For more details, refer to the [LICENSE](https://github.com/ShahSau/alphaCore?tab=MIT-1-ov-file#readme) file.
