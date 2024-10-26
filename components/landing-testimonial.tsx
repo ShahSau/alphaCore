@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import avatar1 from "@/app/assets/avatar-1.png";
 import avatar2 from "@/app/assets/avatar-2.jpg";
