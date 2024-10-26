@@ -4,10 +4,15 @@ import LandingHeader from "@/components/LandingHeader";
 
 const LandingPage = () => {
   return ( 
-    <div className="h-full bg-slate-100">
+    <div className="h-full overflow-scroll bg-[#111827] text-white/90">
+      
+      {/* <LandingNavbar />*/}
       <LandingHeader />
-      <LandingNavbar />
+      {/* <div className="mt-24">
       <LandingHero />
+      </div> */}
+      <LandingHero />
+      
     </div>
    );
 }

@@ -1,58 +1,43 @@
 "use client";
 
-import TypewriterComponent from "typewriter-effect";
-import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
+import LandingButton from "./landing-Button";
 
-import { Button } from "@/components/ui/button";
-import ai from "../app/assets/ai.png"
-import Image from 'next/image'
 export const LandingHero = () => {
-  const { isSignedIn } = useAuth();
+  
 
   return (
-  <div className="relative">
-    <div className="mx-auto max-w-7xl lg:grid lg:grid-cols-12 lg:gap-x-8 lg:px-8">
-      <svg
-        className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-        aria-hidden="true"
-      >
-        <defs>
-          <pattern
-            id="0787a7c5-978c-4f66-83c7-11c213f99cb7"
-            width={200}
-            height={200}
-            x="50%"
-            y={-1}
-            patternUnits="userSpaceOnUse"
-          >
-            <path d="M.5 200V.5H200" fill="none" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" strokeWidth={0} fill="url(#0787a7c5-978c-4f66-83c7-11c213f99cb7)" />
-      </svg>
-      <div className="px-6 pb-24 pt-10 sm:pb-32 lg:col-span-7 lg:px-0 lg:pb-56 lg:pt-48 xl:col-span-6">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <h1 className="mt-24 text-4xl font-bold tracking-tight text-gray-900 sm:mt-10 sm:text-6xl">
-            Let&apos;s Build Something amazing with AI
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Unleash the power of ai to revolutionize industries, accelerate scientific discovery, and enhance everyday 
-            life in ways we have never imagined.
-          </p>
-          <div className="mt-10 flex items-center gap-x-6">
-            <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
-              <Button variant="premium" className="md:text-lg p-4 md:p-6 rounded-full font-semibold">
-                Start Using For Free
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className="relative lg:col-span-5 lg:-mr-8 xl:absolute xl:inset-0 xl:left-1/2 xl:mr-0">
-        <Image src={ai} alt="ai pic" className="aspect-[3/2] w-full  object-cover lg:absolute lg:inset-0 lg:aspect-auto lg:h-full"/>
+  <section className="h-[550px] md:h-[800px] mt-12 md:mt-24 flex items-center justify-center relative [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]" style={{
+    backgroundImage: "url('/stars.png')",
+  }}>
+    <div className="absolute inset-0 bg-[radial-gradient(75%_75%_at_center_center,rgb(142,69,255,.5)_15%,rgb(14,0,36,.5)_78%,transparent)]"></div>
+    {/*circle */}
+    <div className="absolute h-64 w-64 md:h-80 md:w-80 bg-purple-500 rounded-full border border-white/20 top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(50%_50%_at_16.8%_18.3%,white,rgb(184,148,255)_37.7%,rgb(24,0,66))] shadow-[-20px_-20px_50px_rgb(255,255,255,.5),-20px_-20px_80px_rgb(255,255,255,.1),0_0_50px_rgb(140,69,255)]"></div>
+    {/*first ring */}
+    <div className="absolute h-[344px] w-[344px] md:h-[540px] md:w-[540px] lg:h-[580px] lg:w-[580px] opacity-20 border rounded-full top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute h-2 w-2 left-0 bg-white rounded-full top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute h-2 w-2 left-1/2 bg-white rounded-full top-0 -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute h-5 w-5 left-full border border-white rounded-full top-1/2 -translate-x-1/2 -translate-y-1/2 inline-flex items-center justify-center">
+        <div className="h-2 w-2 bg-white rounded-full"></div>
       </div>
     </div>
-  </div>
+    {/*second ring */}
+    <div className="absolute h-[444px] w-[444px] md:h-[620px] md:w-[620px] lg:h-[780px] lg:w-[780px] rounded-full border border-dashed border-white/20 top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+    {/*third ring */}
+    <div className="absolute h-[544px] w-[544px] md:h-[700px] md:w-[700px] lg:h-[980px] lg:w-[980px] rounded-full border opacity-20 border-white top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute h-2 w-2 left-0 bg-white rounded-full top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute h-2 w-2 left-full bg-white rounded-full top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+    </div>
+
+    <div className="container relative -mt-24 md:-mt-32">
+      <h1 className="text-[60px] md:text-[148px] md:leading-none font-semibold tracking-tighter bg-white  bg-[radial-gradient(100%_100%_at_top_left,white,white,rgb(74,32,138,.5))] text-transparent bg-clip-text text-center">AlphaCore</h1>
+      <p className="text-lg md:text-xl text-white/70 mt-5 text-center max-w-xl mx-auto">Unleash the power of ai to enhance everyday life in ways we have never imagined.</p>
+      <div className="flex justify-center mt-5">
+        <LandingButton text="Get Started" />
+      </div>
+      
+
+    </div>
+    
+  </section>
   );
 };
