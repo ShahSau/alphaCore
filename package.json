@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.22.1",
+    "@dotlottie/react-player": "^1.6.19",
     "@hookform/resolvers": "^3.1.1",
     "@prisma/client": "^5.0.0",
     "@radix-ui/react-avatar": "^1.0.3",
