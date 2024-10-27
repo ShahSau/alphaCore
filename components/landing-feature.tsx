@@ -2,7 +2,7 @@
 
 import React, { ComponentPropsWithoutRef, useEffect, useRef, useState } from 'react'
 import { DotLottieCommonPlayer, DotLottiePlayer } from '@dotlottie/react-player'
-import productImage from '@/app/assets/product-image.png'
+import productImage from '@/app/assets/product-image2.png'
 import { animate, motion, useMotionTemplate, useMotionValue, ValueAnimationTransition } from 'framer-motion'
 
 const tabs=[
@@ -16,18 +16,18 @@ const tabs=[
     },
     {
         icon:'/assets/lottie/click.lottie',
-        title: 'One click optimization',
+        title: 'One click to AI',
         isNew: false,
-        backgroundPositionX: 98,
+        backgroundPositionX: 60,
         backgroundPositionY: 100,
         backgroundSizeX: 135,
     },
     {
         icon:'/assets/lottie/stars.lottie',
-        title: 'Smart keyword suggestions',
-        isNew: true,
-        backgroundPositionX: 100,
-        backgroundPositionY: 27,
+        title: 'Manage Subscriptions',
+        isNew: false,
+        backgroundPositionX: 0,
+        backgroundPositionY: 120,
         backgroundSizeX: 177,
     }
 ]
@@ -71,7 +71,7 @@ const FeatureTab = (props:(typeof tabs)[number] & ComponentPropsWithoutRef<'div'
     <div 
         ref={tabRef}
         onMouseEnter={handleTabHover}
-        className='border border-white/10 flex p-2.5 rounded-xl gap-2.5 items-center lg:flex-1 relative'
+        className='border border-white/10 flex p-2.5 rounded-xl gap-2.5 items-center lg:flex-1 relative cursor-pointer'
         onClick={props.onClick}
     >
         {props.selected && (
