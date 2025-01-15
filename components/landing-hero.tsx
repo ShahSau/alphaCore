@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import LandingButton from "./landing-Button";
 import starsBg from "@/app/assets/stars.png"
 import { useRef } from "react";
+import Link from 'next/link';
 
 export const LandingHero = () => {
   const sectionRef = useRef(null);
@@ -95,7 +96,9 @@ export const LandingHero = () => {
       <h1 className="text-[60px] md:text-[148px] md:leading-none font-semibold tracking-tighter bg-white  bg-[radial-gradient(100%_100%_at_top_left,white,white,rgb(74,32,138,.5))] text-transparent bg-clip-text text-center">AlphaCore</h1>
       <p className="text-lg md:text-xl text-white/70 mt-5 text-center max-w-xl mx-auto">Unleash the power of ai to enhance everyday life in ways we have never imagined.</p>
       <div className="flex justify-center mt-5">
-        <LandingButton text="Get Started" />
+        <Link href="/sign-up">
+          <LandingButton text='Get Started'/>
+        </Link>
       </div>
       
 

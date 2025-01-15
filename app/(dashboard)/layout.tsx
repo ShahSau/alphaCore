@@ -11,7 +11,7 @@ const DashboardLayout = async ({
     const isPro = await checkSubscription();
     return(
       <div className="h-full relative">
-          <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 bg-gray-900">
+          <div className="hidden min-h-screen md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 bg-gray-900">
               <Sidebar apiLimitCount={apiLimitCount} isPro={isPro}/>
           </div>
           <main className="h-full md:ml-72">

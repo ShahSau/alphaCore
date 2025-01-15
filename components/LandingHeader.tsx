@@ -19,8 +19,8 @@ const LandingHeader = () => {
                     </div>
                 </div>
                 <div className='flex gap-4 items-center'>
-                    <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
-                        <LandingButton text='Get Started'/>
+                    <Link href={"/sign-in"}>
+                        <LandingButton text='Sign In to Continue'/>
                     </Link>
                 </div>
             </div>

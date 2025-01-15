@@ -109,7 +109,7 @@ const Sidebar = ({apiLimitCount=0, isPro=false}:SidebarProps) => {
 
     const pathname = usePathname();
     return(
-        <div className="space-y-4 py-2 flex flex-col overflow-scroll bg-[#111827] text-white">
+        <div className=" min-h-screen flex flex-col overflow-scroll no-scrollbar bg-[#111827] text-white">
             <div className="px-3 py-1 flex-1">
                 <Link href="/dashboard" className="flex items-center pl-3 mb-14">
                     <h1 className={cn("text-lg font-bold", montserrat.className)}>alphaCore</h1>

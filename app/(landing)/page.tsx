@@ -9,12 +9,7 @@ import LandingcallToAction from "@/components/landing-callToAction";
 const LandingPage = () => {
   return ( 
     <div className="h-full overflow-x-hidden bg-[#111827] text-white/90">
-      
-      {/* <LandingNavbar />*/}
       <LandingHeader />
-      {/* <div className="mt-24">
-      <LandingHero />
-      </div> */}
       <LandingHero />
       <Landinglogoticker />
       <Landingfeature />

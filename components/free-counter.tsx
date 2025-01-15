@@ -46,7 +46,7 @@ export const FreeCounter = ({
 
   if (isPro) {
     return (
-      <div className="px-3">
+      <div className="px-3 md:mb-4">
       <Card className="bg-white/10 border-0">
         <CardContent className="py-6">
           <div className="text-center text-sm text-white mb-4 space-y-2">
@@ -66,7 +66,7 @@ export const FreeCounter = ({
   
 
   return (
-    <div className="px-3">
+    <div className="px-3 md:mb-4">
       <Card className="bg-white/10 border-0">
         <CardContent className="py-6">
           <div className="text-center text-sm text-white mb-4 space-y-2">
