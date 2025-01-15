@@ -87,6 +87,14 @@ export const tools = [
     modelName:"Logo"
   },
   {
+    label: 'Survey Generator',
+    icon: ImageIcon,
+    color: "text-orange-500",
+    bgColor: "bg-orange-500/10",
+    href: '/survey',
+    modelName:"Survey"
+  },
+  {
     label: 'Email',
     icon: MailPlus,
     color: "text-green-500",

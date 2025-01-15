@@ -9,97 +9,10 @@ import {
     Settings, Database, Sigma, Presentation, HelpCircle, MailPlus, Feather, Ratio
 } from "lucide-react";
 import { FreeCounter } from "./free-counter";
+import { tools } from "@/constants";
 
 const montserrat = Montserrat ({ weight: '600', subsets: ['latin'] });
 
-const routes = [
-    {
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-      href: '/dashboard',
-      color: "text-sky-500"
-    },
-    {
-      label: 'Conversation',
-      icon: MessageSquare,
-      href: '/conversation',
-      color: "text-violet-500",
-    },
-    {
-      label: 'Image Generation',
-      icon: ImageIcon,
-      color: "text-pink-700",
-      href: '/image',
-    },
-    {
-      label: 'Language to SQL',
-      icon: Database,
-      color: "text-red-700",
-      href: '/sql',
-    },
-    {
-      label: 'Summerizer',
-      icon: ClipboardList,
-      color: "text-emerald-700",
-      href: '/summerizer',
-    },
-    {
-    label: 'Grammar Correction',
-    icon: GraduationCap,
-    color: "text-pink-700",
-    href: '/grammer',
-      },
-    {
-      label: 'Code Generation',
-      icon: Code,
-      color: "text-green-500",
-      href: '/code',
-    },
-    {
-      label: 'Article Summery',
-      icon: Sigma,
-      color: "text-orange-500",
-      bgColor: "bg-orange-500/10",
-      href: '/article',
-      modelName:"Article"
-    },
-
-    {
-      label: 'Lesson Planner',
-      icon: Presentation,
-      color: "text-sky-500",
-      href: '/lesson',
-    },
-    {
-      label: 'Interview Questions',
-      icon: HelpCircle,
-      color: "text-violet-500",
-      href: '/interview',
-    },
-    {
-      label: 'Logo generator',
-      icon: Feather,
-      color: "text-red-700",
-      href: '/logo',
-    },
-    {
-      label: 'Email',
-      icon: MailPlus,
-      color: "text-green-500",
-      href: '/email',
-    },
-    {
-      label: 'Portrait Generation',
-      icon: Ratio,
-      color: "text-pink-700",
-      href: '/portrait',
-    },
-    {
-      label: 'Settings',
-      icon: Settings,
-      href: '/settings',
-    },
-  ];
   interface SidebarProps {
     apiLimitCount: number;
     isPro: boolean;
@@ -115,7 +28,7 @@ const Sidebar = ({apiLimitCount=0, isPro=false}:SidebarProps) => {
                     <h1 className={cn("text-lg font-bold", montserrat.className)}>alphaCore</h1>
                 </Link>
                 <div className="pb-16">
-                    {routes.map((route, i) => (
+                    {tools.map((route, i) => (
                         <Link 
                             href={route.href} 
                             key={route.href}
