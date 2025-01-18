@@ -23,6 +23,7 @@
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "class-variance-authority": "^0.7.0",
@@ -35,10 +36,12 @@
     "openai": "^3.3.0",
     "postcss": "8.4.26",
     "react": "18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.2",
     "react-hot-toast": "^2.4.1",
     "react-markdown": "^8.0.7",
+    "react-syntax-highlighter": "^15.6.1",
     "react-zoom-pan-pinch": "^3.6.1",
     "replicate": "^0.12.3",
     "stripe": "^12.13.0",
@@ -50,6 +53,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@types/react-copy-to-clipboard": "^5.0.7",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "eslint": "^8.45.0",
     "eslint-config-standard-with-typescript": "^36.1.0",

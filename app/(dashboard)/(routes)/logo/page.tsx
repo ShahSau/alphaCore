@@ -89,7 +89,7 @@ const LogoPage = () => {
                             )}
                         />
                                         
-                        <Button className="col-span-12 lg:col-span-3 w-full" type="submit" disabled={isLoading} size="icon">
+                        <Button className="col-span-12 lg:col-span-3 w-full" type="submit" disabled={isLoading || !form.formState.isValid} size="icon">
                             Generate
                         </Button>
                     </form>

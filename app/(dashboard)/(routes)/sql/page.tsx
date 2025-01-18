@@ -20,11 +20,16 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { a11yDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const SqlPage = () => {
     const router = useRouter()
     const proModal = useProModal();
     const [messages, setMessages] =useState<ChatCompletionRequestMessage[]>([])
+    const [copied, setCopied] = useState(false);
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -55,6 +60,11 @@ const SqlPage = () => {
         }finally{
             router.refresh()
         }
+    };
+
+    const copyContent = (content: string) => {
+        setCopied(true);
+        toast.success("Copied to clipboard");
     };
 
   return (
@@ -92,7 +102,7 @@ const SqlPage = () => {
                                  </FormItem>
                             )}
                         />
-                        <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
+                        <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading || !form.formState.isValid} size="icon">
                             Generate queries
                         </Button>
                     </form>
@@ -113,13 +123,32 @@ const SqlPage = () => {
                         key={message.content}
                         className={cn(
                             "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                            message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                            message.role === "user" ? "bg-white border border-black/10" : "bg-[#2B2B2B]",
                           )}
                         >
                             {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                             <div className="text-sm overflow-hidden leading-7 whitespace-pre-wrap">
-                                {message.content || ""}
-                                </div>
+                                {message.role === "user" ? (
+                                        message.content || ""
+                                    ) : (
+                                        <>
+                                            <SyntaxHighlighter 
+                                                language="sql" style={a11yDark} 
+                                                wrapLines={true}
+                                                showLineNumbers={true}
+                                                customStyle={{borderRadius: "0.5rem", padding: "1rem"}}
+                                            >
+                                                {message.content?.replace(/^```sql\s*|```$/g, '') || ""}
+                                            </SyntaxHighlighter>
+                                            <CopyToClipboard text={message.content || ""} onCopy={() => copyContent(message.content || "")}>
+                                                <Button className="ml-2" variant="secondary">
+                                                    {copied ? "Copied!" : "Copy"}
+                                                 </Button>
+                                            </CopyToClipboard>
+                                        </>
+
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>

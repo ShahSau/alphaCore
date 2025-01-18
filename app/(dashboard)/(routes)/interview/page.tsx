@@ -92,7 +92,7 @@ const InterviewPage = () => {
                                  </FormItem>
                             )}
                         />
-                        <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
+                        <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading || !form.formState.isValid} size="icon">
                             Create Questions
                         </Button>
                     </form>
