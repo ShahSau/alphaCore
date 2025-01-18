@@ -36,28 +36,27 @@ const SurveyPage = () => {
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // try {
-        //     const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
-        //     const newMessages = [...messages, userMessage];
-            
-        //     const response = await axios.post('/api/conversation', { messages: newMessages });
-        //     setMessages((current) => [...current, userMessage, response.data]);
+        try {
+            const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
+            const newMessages = [...messages, userMessage];
 
-        //     form.reset();
+            const response = await axios.post('/api/survey', { messages: newMessages });
+            setMessages((current) => [...current, userMessage, response.data]);
 
-        // } catch (error:any) {
-        //     if(error?.response?.status === 403){
-        //         proModal.onOpen()
-        //     }else{
-        //         console.error(error)
-        //         toast.error("Something went wrong. Please try again.")
-        //     }
+            form.reset();
 
-        // }finally{
-        //     router.refresh()
-        // }
+        } catch (error:any) {
+            if(error?.response?.status === 403){
+                proModal.onOpen()
+            }else{
 
-        console.log(values)
+                toast.error("Something went wrong. Please try again.")
+            }
+
+        }finally{
+            router.refresh()
+        }
+
     };
 
   return (
