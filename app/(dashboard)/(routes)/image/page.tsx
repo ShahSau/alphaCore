@@ -30,7 +30,6 @@ const ImagePage = () => {
         resolver: zodResolver(formSchema),
         defaultValues:{
             prompt: "",
-
         }
     });
 
@@ -122,11 +121,11 @@ const ImagePage = () => {
                         <Loader />
                     </div>
                 )}
-                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4 mt-8">
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-8">
                 {images !== "" && !isLoading && (
                     <Card key={images} className="rounded-lg overflow-hidden">
-                    <div className="relative aspect-square">
-                        <TransformWrapper
+                        <div className="relative aspect-square">
+                            <TransformWrapper
                             initialScale={1}
                         >
                             {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
@@ -145,9 +144,9 @@ const ImagePage = () => {
                                     </TransformComponent>
                                 </>
                             )}
-                        </TransformWrapper>
-                    </div>
-                    <CardFooter className="p-2">
+                            </TransformWrapper>
+                        </div>
+                        <CardFooter className="p-2">
                         <Button onClick={() => window.open(images)} variant="secondary" className="w-full m-2">
                             Open
                             <MoveUpRight className="h-4 w-4 ml-2" />
@@ -156,7 +155,7 @@ const ImagePage = () => {
                             Download
                             <Download className="h-4 w-4 ml-2" />
                         </Button>
-                    </CardFooter>
+                        </CardFooter>
                     </Card>
                 )}
                 </div>

@@ -18,6 +18,8 @@ import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image"
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import Controls from "@/components/ImageComponent";
+import {TransformWrapper,TransformComponent} from "react-zoom-pan-pinch";
 
 const LogoPage = () => {
     const router = useRouter()
@@ -52,6 +54,23 @@ const LogoPage = () => {
             router.refresh()
         }
     };
+
+        const downloadImage = async (url: string) => {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'generatedimage.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            } catch (error) {
+                console.error("Error downloading the image:", error);
+                toast.error("Error downloading the image. Please try again.")
+            }
+        };
 
   return (
 
@@ -104,22 +123,41 @@ const LogoPage = () => {
                 {images === "" && !isLoading && (
                     <Empty label={"No logo generated"} />
                 )}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-8">
                 {images !== "" && !isLoading && (
                     <Card key={images} className="rounded-lg overflow-hidden">
-                    <div className="relative aspect-square">
-                        <Image
-                            fill
-                            alt="Generated"
-                            src={images}
-                        />
-                    </div>
-                    <CardFooter className="p-2">
-                        <Button onClick={() => window.open(images)} variant="secondary" className="w-full">
-                        Open
-                        <MoveUpRight className="h-4 w-4 mr-2" />
+                        <div className="relative aspect-square">
+                            <TransformWrapper
+                            initialScale={1}
+                        >
+                            {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                                <>
+                                    <Controls />
+                                    <TransformComponent>
+                                        <div className="w-full h-full">
+                                            <Image
+                                                alt="Generated"
+                                                src={images}
+                                                width={1000}
+                                                height={1000}
+                                                className="object-cover w-screen h-screen"
+                                            />
+                                        </div>
+                                    </TransformComponent>
+                                </>
+                            )}
+                            </TransformWrapper>
+                        </div>
+                        <CardFooter className="p-2">
+                        <Button onClick={() => window.open(images)} variant="secondary" className="w-full m-2">
+                            Open
+                            <MoveUpRight className="h-4 w-4 ml-2" />
                         </Button>
-                    </CardFooter>
+                        <Button onClick={() => downloadImage(images)} variant="default" className="w-full m-2">
+                            Download
+                            <Download className="h-4 w-4 ml-2" />
+                        </Button>
+                        </CardFooter>
                     </Card>
                 )}
                 </div>

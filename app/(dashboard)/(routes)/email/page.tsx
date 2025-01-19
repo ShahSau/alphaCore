@@ -22,12 +22,13 @@ import { BotAvatar } from "@/components/bot-avatar";
 import { cn } from "@/lib/utils";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const EamilPage = () => {
     const router = useRouter()
     const proModal = useProModal();
     const [email, setEmail] = useState<ChatCompletionRequestMessage[]>([])
-
+    const [copied, setCopied] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
@@ -63,6 +64,10 @@ const EamilPage = () => {
         }
     };
 
+    const copyContent = (content: string) => {
+            setCopied(true);
+            toast.success("Copied to clipboard");
+    };
   return (
 
     <div>
@@ -246,6 +251,11 @@ const EamilPage = () => {
                             <p className="text-sm whitespace-pre-wrap">
                                  {message.content}
                             </p>
+                            {message.role !== "user" && <CopyToClipboard text={message.content || ""} onCopy={() => copyContent(message.content || "")}>
+                                <Button className="mt-2" variant="secondary">
+                                    Copy
+                                </Button>
+                            </CopyToClipboard>}
                         </div>
                     ))}
                 </div>

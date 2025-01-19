@@ -142,7 +142,7 @@ const SqlPage = () => {
                                             </SyntaxHighlighter>
                                             <CopyToClipboard text={message.content || ""} onCopy={() => copyContent(message.content || "")}>
                                                 <Button className="ml-2" variant="secondary">
-                                                    {copied ? "Copied!" : "Copy"}
+                                                    Copy
                                                  </Button>
                                             </CopyToClipboard>
                                         </>
