@@ -23,6 +23,7 @@ import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { NextResponse } from "next/server";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import Typewrite from "@/components/Typewrite";
 
 const ArticleSummery = () => {
     const router = useRouter()
@@ -149,9 +150,12 @@ const ArticleSummery = () => {
                           )}
                         >
                             <BotAvatar />
-                            <p className="text-sm whitespace-pre-wrap">
+                            {/* <p className="text-sm whitespace-pre-wrap">
                                  {messages}
-                            </p>
+                            </p> */}
+                            <Typewrite
+                                message={messages}
+                                />
                         </div>
                 )}
                 </div>

@@ -18,9 +18,11 @@ import { Loader } from "@/components/loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
-import ReactMarkdown from "react-markdown";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { a11yDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const CodePage = () => {
     const router = useRouter()
@@ -113,23 +115,39 @@ const CodePage = () => {
                         <div 
                         key={message.content}
                         className={cn(
-                            "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                            message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                            "w-full flex items-start  rounded-lg",
+                            message.role === "user" ? "bg-white border border-black/10 gap-x-8 p-8 " : "bg-muted",
                           )}
                         >
                             {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                            <ReactMarkdown components={{
-                                pre: ({ node, ...props }) => (
-                                    <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
-                                        <pre {...props} />
+                            {
+                                message.role === "user" ? (
+                                    message.content || ""
+                                ):(
+                                    <div className="w-full">
+                                        <div>
+                                            <SyntaxHighlighter 
+                                                language="javascript"
+                                                style={a11yDark}
+                                                className="rounded-lg p-4 w-full"
+                                                wrapLines={true}
+                                                showLineNumbers={true}
+                                                customStyle={{ borderRadius: "0.5rem", padding: "1rem" }}
+                                            >
+                                                {message.content?.replace(/^```jsx\s*|```$/g, '') || ""}
+                                            </SyntaxHighlighter>
+                                        </div>
+                                        <div className="mt-2 w-1/6 md:w-1/12">
+                                            <CopyToClipboard text={message.content?.replace(/^```jsx\s*|```$/g, '') || ""}>
+                                                <Button className="w-full" variant="default">
+                                                    Copy Code
+                                                </Button>
+                                            </CopyToClipboard>
+                                        </div>
                                     </div>
-                                ),
-                                code: ({ node, ...props }) => (
-                                    <code className="bg-black/10 rounded-lg p-1" {...props} />
+
                                 )
-                            }} className="text-sm overflow-hidden leading-7">
-                                {message.content || ""}
-                            </ReactMarkdown>
+                            }
                         </div>
                     ))}
                 </div>

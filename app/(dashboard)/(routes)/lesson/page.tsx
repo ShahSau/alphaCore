@@ -20,6 +20,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import ReactMarkdown from 'react-markdown';
 
 const LessonPlannerPage = () => {
     const router = useRouter()
@@ -37,7 +38,7 @@ const LessonPlannerPage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
+            const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt + " in markdown format" };
             const newMessages = [...messages, userMessage];
             
             const response = await axios.post('/api/lesson', { messages: newMessages });
@@ -117,9 +118,15 @@ const LessonPlannerPage = () => {
                           )}
                         >
                             {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                            <p className="text-sm whitespace-pre-wrap">
-                                 {message.content}
-                            </p>
+                            <div className="text-sm whitespace-pre-wrap w-full">
+                                    {message.role === "user" ? (
+                                        message.content
+                                    ) : (
+                                        <ReactMarkdown>
+                                            {message.content || ""}
+                                        </ReactMarkdown>
+                                    )}
+                            </div>
                         </div>
                     ))}
                 </div>
