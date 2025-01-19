@@ -23,7 +23,7 @@ import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { NextResponse } from "next/server";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import Typewrite from "@/components/typewrite";
+import Typewrite from "@/components/TypeWrite";
 
 const ArticleSummery = () => {
     const router = useRouter()

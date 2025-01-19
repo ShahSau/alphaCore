@@ -36,22 +36,22 @@ export async function POST(
         return new NextResponse("Messages are required", { status: 400 });
     }
 
-    const freeTrial = await checkApiLimit();
-    const isPro = await checkSubscription();
+    // const freeTrial = await checkApiLimit();
+    // const isPro = await checkSubscription();
 
 
-    if(!freeTrial && !isPro) {
-        return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
-    }
+    // if(!freeTrial && !isPro) {
+    //     return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
+    // }
 
     const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages:[instructionMessage, ...messages]
       });
     
-    if(!isPro){
-        await incrementApiLimit();
-    }
+    // if(!isPro){
+    //     await incrementApiLimit();
+    // }
 
      return NextResponse.json(response.data.choices[0].message);
    } catch (error) {

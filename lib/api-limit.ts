@@ -64,5 +64,6 @@ export const getApiLimitCount = async () => {
     return 0;
   }
 
-  return userApiLimit.count;
+  // return userApiLimit.count;
+  return 0; // TODO: remove this line and uncomment the above line after finishing local testing
 };

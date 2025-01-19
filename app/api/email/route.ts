@@ -42,13 +42,13 @@ export async function POST(
     if (!prompt) {
         return new NextResponse("Messages are required", { status: 400 });
     }
-    const freeTrial = await checkApiLimit();
-    const isPro = await checkSubscription();
+    // const freeTrial = await checkApiLimit();
+    // const isPro = await checkSubscription();
 
 
-    if(!freeTrial && !isPro) {
-        return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
-    }
+    // if(!freeTrial && !isPro) {
+    //     return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
+    // }
     const messages=`You will be provided an email in ${language}. Write a response of the email. Please ensure that the response is written in the same language as the email, unless otherwise specified. The tone of the response should be ${mood}. This is a(n) ${type}. Your name is ${name}. If necessary, please use the following additional context to inform your response: ${extra}\n${prompt}`
     const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
@@ -60,9 +60,9 @@ export async function POST(
         ]
       });
       
-    if(!isPro){
-        await incrementApiLimit();
-    }
+    // if(!isPro){
+    //     await incrementApiLimit();
+    // }
 
      return NextResponse.json(response.data.choices[0].message);
    } catch (error) {

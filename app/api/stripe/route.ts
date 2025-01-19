@@ -13,9 +13,10 @@ export async function GET() {
     const user = await currentUser();
 
     if (!userId || !user) {
+      console.error("Unauthorized access attempt");
       return new NextResponse("Unauthorized", { status: 401 });
     }
-
+console.log("User ID", userId, "FFF",prismadb)
     const userSubscription = await prismadb.userSubscription.findUnique({
       where: {
         userId
@@ -23,6 +24,7 @@ export async function GET() {
     })
 
     if (userSubscription && userSubscription.stripeCustomerId) {
+      console.log("User has a subscription")
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
         return_url: settingsUrl,
@@ -41,7 +43,7 @@ export async function GET() {
       line_items: [
         {
           price_data: {
-            currency: "USD",
+            currency: "EUR",
             product_data: {
               name: "alphaCore",
               description: "Unlimited AI Generations"

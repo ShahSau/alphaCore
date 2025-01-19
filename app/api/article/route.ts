@@ -26,12 +26,12 @@ export async function POST(
     }
 
 
-    const freeTrial = await checkApiLimit();
-    const isPro = await checkSubscription();
+    // const freeTrial = await checkApiLimit();
+    // const isPro = await checkSubscription();
 
-    if(!freeTrial && !isPro) {
-        return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
-    }
+    // if(!freeTrial && !isPro) {
+    //     return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
+    // }
 
     const url = `https://article-extractor-and-summarizer.p.rapidapi.com/summarize?url=${link}&lang=${lang}&engine=2`
     
@@ -47,9 +47,9 @@ export async function POST(
     const res = await response.text();
     const data = JSON.parse(res);
     
-    if(!isPro){
-        await incrementApiLimit();
-    }
+    // if(!isPro){
+    //     await incrementApiLimit();
+    // }
      return NextResponse.json(data.summary);
    } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });

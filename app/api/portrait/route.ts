@@ -20,17 +20,17 @@ export async function POST(
     if (!prompt) {
         return new NextResponse("Prompt is required", { status: 400 });
     }
-    const freeTrial = await checkApiLimit();
-    const isPro = await checkSubscription();
+    // const freeTrial = await checkApiLimit();
+    // const isPro = await checkSubscription();
 
-    if(!freeTrial && !isPro) {
-        return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
-    }
+    // if(!freeTrial && !isPro) {
+    //     return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
+    // }
 
     const data = await apiCall('POST', `create a portrait of ${prompt}`)
-    if(!isPro){
-        await incrementApiLimit();
-    }
+    // if(!isPro){
+    //     await incrementApiLimit();
+    // }
     return NextResponse.json(data);
    } catch (error) {
    
