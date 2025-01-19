@@ -50,11 +50,8 @@ const Typewrite = ({ message }: { message: string }) => {
                 }}
                 className="absolute bottom-[3px] left-[1px] right-0 top-[3px] bg-neutral-950"
               />
-
             </motion.span>
-
           </motion.span>
-
         ))}
       </span>
     </p>

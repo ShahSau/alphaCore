@@ -6,9 +6,7 @@ export const Loader = () => {
       <div className="relative px-4 py-4">
         <BarLoader />
       </div>
-      <p className="text-sm text-muted-foreground">
-        alphaCore is thinking...
-      </p>
+      <p className="text-sm text-muted-foreground">alphaCore is thinking...</p>
     </div>
   );
 };
@@ -46,5 +44,5 @@ const BarLoader = () => {
       <motion.div variants={variants} className="h-12 w-2 bg-purple-500" />
       <motion.div variants={variants} className="h-12 w-2 bg-purple-500" />
     </motion.div>
-      );
-    };
+  );
+};

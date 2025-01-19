@@ -14,10 +14,10 @@ export const FreeCounter = ({
   apiLimitCount = 0,
   isPro = false,
 }: {
-  apiLimitCount: number,
-  isPro: boolean,
+  apiLimitCount: number;
+  isPro: boolean;
 }) => {
-    // to prevent hydration mismatch
+  // to prevent hydration mismatch
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const proModal = useProModal();
@@ -47,23 +47,19 @@ export const FreeCounter = ({
   if (isPro) {
     return (
       <div className="px-3 md:mb-4">
-      <Card className="bg-white/10 border-0">
-        <CardContent className="py-6">
-          <div className="text-center text-sm text-white mb-4 space-y-2">
-            <p>
-              You have upgraded to pro plan
-            </p>
-          </div>
-          <Button onClick={onClick} variant="premium" className="w-full">
-            Manage Subscription
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
-    )
+        <Card className="bg-white/10 border-0">
+          <CardContent className="py-6">
+            <div className="text-center text-sm text-white mb-4 space-y-2">
+              <p>You have upgraded to pro plan</p>
+            </div>
+            <Button onClick={onClick} variant="premium" className="w-full">
+              Manage Subscription
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
-
-
 
   return (
     <div className="px-3 md:mb-4">
@@ -77,12 +73,16 @@ export const FreeCounter = ({
               <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} />
             )} */}
           </div>
-          <Button onClick={proModal.onOpen} variant="premium" className="w-full">
+          <Button
+            onClick={proModal.onOpen}
+            variant="premium"
+            className="w-full"
+          >
             Upgrade
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};

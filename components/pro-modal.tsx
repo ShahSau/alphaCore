@@ -5,13 +5,13 @@ import { useState } from "react";
 import { Check, Zap } from "lucide-react";
 import { toast } from "react-hot-toast";
 
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   DialogDescription,
-  DialogFooter
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,11 +31,11 @@ export const ProModal = () => {
 
       window.location.href = response.data.url;
     } catch (error) {
-    toast.error("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
@@ -51,7 +51,10 @@ export const ProModal = () => {
           </DialogTitle>
           <DialogDescription className="overflow-scroll text-center pt-2 space-y-2 text-zinc-900 font-medium px-4 md:px-20 grid grid-cols-3 gap-6 sm:grid-cols-3 lg:grid-cols-3">
             {tools.map((tool) => (
-              <Card key={tool.href} className="p-1 border-black/5 flex items-center justify-around">
+              <Card
+                key={tool.href}
+                className="p-1 border-black/5 flex items-center justify-around"
+              >
                 <div className="flex items-center">
                   <div className={cn("p-0 w-fit rounded-md", tool.bgColor)}>
                     <tool.icon className={cn("w-6 h-6", tool.color)} />
@@ -66,7 +69,13 @@ export const ProModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button disabled={loading} onClick={onSubscribe} size="lg" variant="premium" className="w-full">
+          <Button
+            disabled={loading}
+            onClick={onSubscribe}
+            size="lg"
+            variant="premium"
+            className="w-full"
+          >
             Upgrade
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
