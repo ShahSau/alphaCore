@@ -7,7 +7,7 @@ import Landingtestimonial from "@/components/landing-testimonial";
 import LandingcallToAction from "@/components/landing-callToAction";
 
 const LandingPage = () => {
-  return ( 
+  return (
     <div className="h-full overflow-x-hidden bg-[#111827] text-white/90">
       <LandingHeader />
       <LandingHero />
@@ -15,9 +15,8 @@ const LandingPage = () => {
       <Landingfeature />
       <Landingtestimonial />
       <LandingcallToAction />
-      
     </div>
-   );
-}
- 
+  );
+};
+
 export default LandingPage;

@@ -16,7 +16,7 @@ export async function GET() {
       console.error("Unauthorized access attempt");
       return new NextResponse("Unauthorized", { status: 401 });
     }
-console.log("User ID", userId, "FFF",prismadb)
+
     const userSubscription = await prismadb.userSubscription.findUnique({
       where: {
         userId
@@ -24,7 +24,7 @@ console.log("User ID", userId, "FFF",prismadb)
     })
 
     if (userSubscription && userSubscription.stripeCustomerId) {
-      console.log("User has a subscription")
+
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
         return_url: settingsUrl,
