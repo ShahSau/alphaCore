@@ -75,18 +75,15 @@ const SqlPage = () => {
         title="Natural language to SQL"
         description="Convert natural language into SQL queries."
         icon={Database}
-        iconColor="text-red-700"
-        bgColor="bg-red-700/10"
+        iconColor="text-green-500"
+        bgColor="bg-green-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="
-                        rounded-lg border w-full 
-                        p-4 px-3 md:px-6 focus-within:shadow-sm
-                        grid grid-cols-12 gap-2 "
+              className="rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid grid-cols-12 gap-2 "
             >
               <FormField
                 name="prompt"

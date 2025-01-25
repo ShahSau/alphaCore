@@ -84,8 +84,8 @@ const EamilPage = () => {
         title="Email Response Generation"
         description="Generate email responses from a prompt."
         icon={MailPlus}
-        iconColor="text-green-500"
-        bgColor="bg-green-500/10"
+        iconColor="text-emerald-700"
+        bgColor="bg-emerald-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>

@@ -3,18 +3,11 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ClipboardList } from "lucide-react";
+import { MessageCircleIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { formSchema, languageOptions } from "./constants";
+import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
@@ -25,25 +18,20 @@ import { Loader } from "@/components/common/loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
-import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
-import { NextResponse } from "next/server";
-import { useProModal, useSidebarToggle } from "@/hooks/use-pro-modal";
+import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import Typewrite from "@/components/TypeWrite";
-import { motion } from "framer-motion";
+import QuestionList from "@/components/QuestionList";
 import PageLayout from "@/components/common/pageLayout";
 
-const ArticleSummery = () => {
+const InterviewPage = () => {
   const router = useRouter();
   const proModal = useProModal();
-  const [messages, setMessages] = useState<string>("");
-  const open = useSidebarToggle((state) => state.isOpen);
+  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
-      lang: "en",
     },
   });
 
@@ -51,14 +39,17 @@ const ArticleSummery = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      form.setValue("prompt", "");
+      const userMessage: ChatCompletionRequestMessage = {
+        role: "user",
+        content: values.prompt,
+      };
+      const newMessages = [...messages, userMessage];
 
-      const resposne = await axios.post("/api/article", {
-        link: values.prompt,
-        lang: values.lang,
+      const response = await axios.post("/api/interview", {
+        messages: newMessages,
       });
+      setMessages((current) => [...current, userMessage, response.data]);
 
-      setMessages(resposne.data);
       form.reset();
     } catch (error: any) {
       if (error?.response?.status === 403) {
@@ -75,11 +66,11 @@ const ArticleSummery = () => {
   return (
     <PageLayout>
       <Heading
-        title="Article Summery"
-        description="Summarizes the article after extracting it from the specified url."
-        icon={ClipboardList}
-        iconColor="text-emerald-700"
-        bgColor="bg-emerald-700/10"
+        title="Interview questions"
+        description="Create interview questions."
+        icon={MessageCircleIcon}
+        iconColor="text-red-700"
+        bgColor="bg-red-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -94,53 +85,25 @@ const ArticleSummery = () => {
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-7">
+                  <FormItem className="col-span-12 lg:col-span-10">
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Enter the link of the article to get the summery"
+                        placeholder="Create a list of 8 questions for an interview with a science fiction author."
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="lang"
-                render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-3">
-                    <Select
-                      disabled={isLoading}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue defaultValue={field.value} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {languageOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-
               <Button
                 className="col-span-12 lg:col-span-2 w-full"
                 type="submit"
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Summery
+                Create Questions
               </Button>
             </form>
           </Form>
@@ -151,21 +114,35 @@ const ArticleSummery = () => {
               <Loader />
             </div>
           )}
-          {messages === "" && !isLoading && (
-            <Empty label={"No article to summarize"} />
+          {messages.length === 0 && !isLoading && (
+            <Empty label="No conversation started." />
           )}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages !== "" && !isLoading && (
+            {messages.map((message) => (
               <div
-                key={messages}
+                key={message.content}
                 className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg bg-white border border-black/10"
+                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                  message.role === "user"
+                    ? "bg-white border border-black/10"
+                    : "bg-muted"
                 )}
               >
-                <BotAvatar />
-                <Typewrite message={messages} />
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                {message.role === "user" && (
+                  <p className="text-sm whitespace-pre-wrap">
+                    {message.content}
+                  </p>
+                )}
+                {message.role !== "user" && (
+                  <>
+                    <QuestionList
+                      questions={message.content?.split("\n") || []}
+                    />
+                  </>
+                )}
               </div>
-            )}
+            ))}
           </div>
         </div>
       </div>
@@ -173,4 +150,4 @@ const ArticleSummery = () => {
   );
 };
 
-export default ArticleSummery;
+export default InterviewPage;

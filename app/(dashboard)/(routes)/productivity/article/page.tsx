@@ -3,11 +3,18 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { HelpCircle } from "lucide-react";
+import { Newspaper } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { formSchema } from "./constants";
+import { formSchema, languageOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
@@ -18,20 +25,25 @@ import { Loader } from "@/components/common/loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
-import { useProModal } from "@/hooks/use-pro-modal";
+import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { NextResponse } from "next/server";
+import { useProModal, useSidebarToggle } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import QuestionList from "@/components/QuestionList";
+import Typewrite from "@/components/TypeWrite";
+import { motion } from "framer-motion";
 import PageLayout from "@/components/common/pageLayout";
 
-const InterviewPage = () => {
+const ArticleSummery = () => {
   const router = useRouter();
   const proModal = useProModal();
-  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const [messages, setMessages] = useState<string>("");
+  const open = useSidebarToggle((state) => state.isOpen);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
+      lang: "en",
     },
   });
 
@@ -39,17 +51,14 @@ const InterviewPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionRequestMessage = {
-        role: "user",
-        content: values.prompt,
-      };
-      const newMessages = [...messages, userMessage];
+      form.setValue("prompt", "");
 
-      const response = await axios.post("/api/interview", {
-        messages: newMessages,
+      const resposne = await axios.post("/api/article", {
+        link: values.prompt,
+        lang: values.lang,
       });
-      setMessages((current) => [...current, userMessage, response.data]);
 
+      setMessages(resposne.data);
       form.reset();
     } catch (error: any) {
       if (error?.response?.status === 403) {
@@ -66,11 +75,11 @@ const InterviewPage = () => {
   return (
     <PageLayout>
       <Heading
-        title="Interview questions"
-        description="Create interview questions."
-        icon={HelpCircle}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        title="Article Summery"
+        description="Summarizes the article after extracting it from the specified url."
+        icon={Newspaper}
+        iconColor="text-emerald-700"
+        bgColor="bg-emerald-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -85,25 +94,53 @@ const InterviewPage = () => {
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
+                  <FormItem className="col-span-12 lg:col-span-7">
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Create a list of 8 questions for an interview with a science fiction author."
+                        placeholder="Enter the link of the article to get the summery"
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="lang"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-3">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {languageOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
               <Button
                 className="col-span-12 lg:col-span-2 w-full"
                 type="submit"
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Create Questions
+                Summery
               </Button>
             </form>
           </Form>
@@ -114,35 +151,21 @@ const InterviewPage = () => {
               <Loader />
             </div>
           )}
-          {messages.length === 0 && !isLoading && (
-            <Empty label="No conversation started." />
+          {messages === "" && !isLoading && (
+            <Empty label={"No article to summarize"} />
           )}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
+            {messages !== "" && !isLoading && (
               <div
-                key={message.content}
+                key={messages}
                 className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user"
-                    ? "bg-white border border-black/10"
-                    : "bg-muted"
+                  "p-8 w-full flex items-start gap-x-8 rounded-lg bg-white border border-black/10"
                 )}
               >
-                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                {message.role === "user" && (
-                  <p className="text-sm whitespace-pre-wrap">
-                    {message.content}
-                  </p>
-                )}
-                {message.role !== "user" && (
-                  <>
-                    <QuestionList
-                      questions={message.content?.split("\n") || []}
-                    />
-                  </>
-                )}
+                <BotAvatar />
+                <Typewrite message={messages} />
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
@@ -150,4 +173,4 @@ const InterviewPage = () => {
   );
 };
 
-export default InterviewPage;
+export default ArticleSummery;
