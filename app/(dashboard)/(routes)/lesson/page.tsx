@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import React, { useState } from "react";
-import Heading from "@/components/heading";
+import Heading from "@/components/common/heading";
 import { Presentation } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
@@ -13,14 +13,15 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
-import { Empty } from "@/components/empty";
-import { Loader } from "@/components/loader";
+import { Empty } from "@/components/common/empty";
+import { Loader } from "@/components/common/loader";
 import { cn } from "@/lib/utils";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
+import { UserAvatar } from "@/components/common/user-avatar";
+import { BotAvatar } from "@/components/common/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
+import PageLayout from "@/components/common/pageLayout";
 
 const LessonPlannerPage = () => {
   const router = useRouter();
@@ -63,7 +64,7 @@ const LessonPlannerPage = () => {
   };
 
   return (
-    <div>
+    <PageLayout>
       <Heading
         title="Lesson Planner"
         description="Generate a lesson plan for a specific topic."
@@ -140,7 +141,7 @@ const LessonPlannerPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import React, { useState } from "react";
-import Heading from "@/components/heading";
+import Heading from "@/components/common/heading";
 import { ClipboardList } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema, languageOptions } from "./constants";
@@ -20,15 +20,16 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
-import { Empty } from "@/components/empty";
-import { Loader } from "@/components/loader";
+import { Empty } from "@/components/common/empty";
+import { Loader } from "@/components/common/loader";
 import { cn } from "@/lib/utils";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
+import { UserAvatar } from "@/components/common/user-avatar";
+import { BotAvatar } from "@/components/common/bot-avatar";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { NextResponse } from "next/server";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import PageLayout from "@/components/common/pageLayout";
 
 const SummerizerPage = () => {
   const router = useRouter();
@@ -77,7 +78,7 @@ const SummerizerPage = () => {
   };
 
   return (
-    <div>
+    <PageLayout>
       <Heading
         title="Summerizer"
         description="Summarizes the article after extracting it from the specified url."
@@ -176,7 +177,7 @@ const SummerizerPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

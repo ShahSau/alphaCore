@@ -1,10 +1,9 @@
-import { LandingNavbar } from "@/components/landing-navbar";
-import { LandingHero } from "@/components/landing-hero";
-import LandingHeader from "@/components/LandingHeader";
-import Landinglogoticker from "@/components/landing-logoticker";
-import Landingfeature from "@/components/landing-feature";
-import Landingtestimonial from "@/components/landing-testimonial";
-import LandingcallToAction from "@/components/landing-callToAction";
+import { LandingHero } from "@/components/landing/landing-hero";
+import LandingHeader from "@/components/landing/LandingHeader"
+import Landinglogoticker from "@/components/landing/landing-logoticker";
+import Landingfeature from "@/components/landing/landing-feature";
+import Landingtestimonial from "@/components/landing/landing-testimonial";
+import LandingcallToAction from "@/components/landing/landing-callToAction";
 
 const LandingPage = () => {
   return (

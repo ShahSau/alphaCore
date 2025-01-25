@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import React, { useState } from "react";
-import Heading from "@/components/heading";
+import Heading from "@/components/common/heading";
 import { MailPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Empty } from "@/components/empty";
-import { Loader } from "@/components/loader";
+import { Empty } from "@/components/common/empty";
+import { Loader } from "@/components/common/loader";
 import {
   Select,
   SelectContent,
@@ -23,12 +23,13 @@ import {
 } from "@/components/ui/select";
 import { moodOptions, languagesOptions, typeOptions } from "./constants";
 import { ChatCompletionRequestMessage } from "openai";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
+import { UserAvatar } from "@/components/common/user-avatar";
+import { BotAvatar } from "@/components/common/bot-avatar";
 import { cn } from "@/lib/utils";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import PageLayout from "@/components/common/pageLayout";
 
 const EamilPage = () => {
   const router = useRouter();
@@ -78,7 +79,7 @@ const EamilPage = () => {
     toast.success("Copied to clipboard");
   };
   return (
-    <div>
+    <PageLayout>
       <Heading
         title="Email Response Generation"
         description="Generate email responses from a prompt."
@@ -270,7 +271,7 @@ const EamilPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

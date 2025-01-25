@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import React, { useState } from "react";
-import Heading from "@/components/heading";
+import Heading from "@/components/common/heading";
 import { Image, MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
@@ -13,15 +13,16 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
-import { Empty } from "@/components/empty";
-import { Loader } from "@/components/loader";
+import { Empty } from "@/components/common/empty";
+import { Loader } from "@/components/common/loader";
 import { cn } from "@/lib/utils";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
+import { UserAvatar } from "@/components/common/user-avatar";
+import { BotAvatar } from "@/components/common/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import Questionnaire from "@/components/Questionnaire";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import PageLayout from "@/components/common/pageLayout";
 
 const SurveyPage = () => {
   const router = useRouter();
@@ -67,7 +68,7 @@ const SurveyPage = () => {
     toast.success("Copied to clipboard");
   };
   return (
-    <div>
+    <PageLayout>
       <Heading
         title="Survey Generator"
         description="Generate survey questions for your research or study."
@@ -153,7 +154,7 @@ const SurveyPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

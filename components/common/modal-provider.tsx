@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ProModal } from "@/components/pro-modal";
+import { ProModal } from "@/components/common/pro-modal";
 
 export const ModalProvider = () => {
   // from preventing hydration mismatch

@@ -1,14 +1,15 @@
 import { Settings } from "lucide-react";
 
-import Heading from "@/components/heading";
-import { SubscriptionButton } from "@/components/subscription-button";
+import Heading from "@/components/common/heading";
+import { SubscriptionButton } from "@/components/common/subscription-button";
 import { checkSubscription } from "@/lib/subscription";
+import PageLayout from "@/components/common/pageLayout";
 
 const SettingsPage = async () => {
   const isPro = await checkSubscription();
 
   return (
-    <div>
+    <PageLayout>
       <Heading
         title="Settings"
         description="Manage account settings."
@@ -24,7 +25,7 @@ const SettingsPage = async () => {
         </div>
         <SubscriptionButton isPro={isPro} />
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

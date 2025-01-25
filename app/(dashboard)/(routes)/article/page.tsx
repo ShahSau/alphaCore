@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import React, { useState } from "react";
-import Heading from "@/components/heading";
+import Heading from "@/components/common/heading";
 import { ClipboardList } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema, languageOptions } from "./constants";
@@ -20,21 +20,24 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
-import { Empty } from "@/components/empty";
-import { Loader } from "@/components/loader";
+import { Empty } from "@/components/common/empty";
+import { Loader } from "@/components/common/loader";
 import { cn } from "@/lib/utils";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
+import { UserAvatar } from "@/components/common/user-avatar";
+import { BotAvatar } from "@/components/common/bot-avatar";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { NextResponse } from "next/server";
-import { useProModal } from "@/hooks/use-pro-modal";
+import { useProModal, useSidebarToggle } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import Typewrite from "@/components/TypeWrite";
+import { motion } from "framer-motion";
+import PageLayout from "@/components/common/pageLayout";
 
 const ArticleSummery = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<string>("");
+  const open = useSidebarToggle((state) => state.isOpen);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,7 +73,7 @@ const ArticleSummery = () => {
   };
 
   return (
-    <div>
+    <PageLayout>
       <Heading
         title="Article Summery"
         description="Summarizes the article after extracting it from the specified url."
@@ -166,7 +169,7 @@ const ArticleSummery = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

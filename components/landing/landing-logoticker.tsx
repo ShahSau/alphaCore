@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import acmeLogo from "../app/assets/logo-acme.png";
-import apexLogo from "../app/assets/logo-apex.png";
-import celestialLogo from "../app/assets/logo-celestial.png";
-import quantumLogo from "../app/assets/logo-quantum.png";
-import pulseLogo from "../app/assets/logo-pulse.png";
-import echoLogo from "../app/assets/logo-echo.png";
+import acmeLogo from "../../app/assets/logo-acme.png";
+import apexLogo from "../../app/assets/logo-apex.png";
+import celestialLogo from "../../app/assets/logo-celestial.png";
+import quantumLogo from "../../app/assets/logo-quantum.png";
+import pulseLogo from "../../app/assets/logo-pulse.png";
+import echoLogo from "../../app/assets/logo-echo.png"
 import Image from "next/image";
 import { motion } from "framer-motion";
 

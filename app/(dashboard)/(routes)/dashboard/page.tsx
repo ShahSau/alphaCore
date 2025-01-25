@@ -4,11 +4,12 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import PageLayout from "@/components/common/pageLayout";
 
 const DashBoardPage = () => {
   const router = useRouter();
   return (
-    <div>
+    <PageLayout>
       <div className="mb-8 spacce-y-4">
         <h2 className="text-2xl md:text-4xl font-bold text-center">
           Explore the power of AI
@@ -35,7 +36,7 @@ const DashBoardPage = () => {
           </Card>
         ))}
       </div>
-    </div>
+    </PageLayout>
   );
 };
 export default DashBoardPage;

@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import React, { useState } from "react";
-import Heading from "@/components/heading";
+import Heading from "@/components/common/heading";
 import { Feather, Download, MoveUpRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
@@ -12,14 +12,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Empty } from "@/components/empty";
-import { Loader } from "@/components/loader";
+import { Empty } from "@/components/common/empty";
+import { Loader } from "@/components/common/loader";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import Controls from "@/components/ImageComponent";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import PageLayout from "@/components/common/pageLayout";
 
 const LogoPage = () => {
   const router = useRouter();
@@ -72,7 +73,7 @@ const LogoPage = () => {
   };
 
   return (
-    <div>
+    <PageLayout>
       <Heading
         title="Logo Generation"
         description="Turn your promt into memorable logos."
@@ -170,7 +171,7 @@ const LogoPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
