@@ -20,8 +20,28 @@ import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import QuestionList from "@/components/QuestionList";
+import QuestionList from "@/components/job-search/QuestionList";
 import PageLayout from "@/components/common/pageLayout";
+
+
+interface QA {
+  question: string;
+  answer: string;
+}
+
+const parseQA = (str: string): QA[] => {
+  const sections = str.trim().split(/\n(?=\d+\.\sQuestion:)/);
+  return sections.map(section => {
+    const [questionPart, ...answerParts] = section.split('\n   Answer: ');
+    const question = questionPart.replace(/\d+\.\sQuestion:\s/, "").trim();
+    const answer = answerParts.join(' ').trim();
+    return {
+      question,
+      answer
+    };
+  });
+};
+
 
 const InterviewPage = () => {
   const router = useRouter();
@@ -41,7 +61,7 @@ const InterviewPage = () => {
     try {
       const userMessage: ChatCompletionRequestMessage = {
         role: "user",
-        content: values.prompt,
+        content: values.prompt.slice(0,-1)+" with answers in this format: 1. Question: - Answer:",
       };
       const newMessages = [...messages, userMessage];
 
@@ -90,7 +110,7 @@ const InterviewPage = () => {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Create a list of 8 questions for an interview with a science fiction author."
+                        placeholder="Create a list of 8 questions for an interview for a Python Developer role."
                         {...field}
                       />
                     </FormControl>
@@ -125,7 +145,7 @@ const InterviewPage = () => {
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user"
                     ? "bg-white border border-black/10"
-                    : "bg-muted"
+                    : "bg-slate-900"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
@@ -135,11 +155,9 @@ const InterviewPage = () => {
                   </p>
                 )}
                 {message.role !== "user" && (
-                  <>
                     <QuestionList
-                      questions={message.content?.split("\n") || []}
+                      questions={parseQA(message.content || "")}
                     />
-                  </>
                 )}
               </div>
             ))}
