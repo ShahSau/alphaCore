@@ -163,7 +163,7 @@ const ArticleSummery = () => {
                 )}
               >
                 <BotAvatar />
-                <Typewrite message={messages} />
+                <Typewrite message={messages.toLowerCase()} />
               </div>
             )}
           </div>

@@ -30,6 +30,7 @@ import { NextResponse } from "next/server";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import PageLayout from "@/components/common/pageLayout";
+import Typewrite from "@/components/TypeWrite";
 
 const SummerizerPage = () => {
   const router = useRouter();
@@ -160,20 +161,25 @@ const SummerizerPage = () => {
             <Empty label="No conversation started." />
           )}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.content}
-                className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user"
-                    ? "bg-white border border-black/10"
-                    : "bg-muted"
-                )}
-              >
-                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-              </div>
-            ))}
+            {messages.map((message) => {
+              return message.role === "user" ? (
+                <div
+                  key={message.content}
+                  className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-white border border-black/10"
+                >
+                  <UserAvatar />
+                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                </div>
+              ) : (
+                <div
+                  key={message.content}
+                  className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-muted"
+                >
+                  <BotAvatar />
+                  <Typewrite message={message.content?.toLowerCase() || ""} />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

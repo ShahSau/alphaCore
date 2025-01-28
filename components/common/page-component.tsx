@@ -1,12 +1,9 @@
 "use client";
-import { tools } from "@/constants";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ClassArray, ClassDictionary } from "clsx";
-import { Key, JSX, ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode } from "react";
 
 interface toolsprops {
   label: string;
@@ -22,22 +19,18 @@ interface PageComponentProps {
   desc: string;
   tools: toolsprops[];
 }
-const PageComponent = ({title,desc,tools}:PageComponentProps) => {
+const PageComponent = ({ title, desc, tools }: PageComponentProps) => {
   const router = useRouter();
   return (
     <>
       <div className="mb-8 spacce-y-4">
-        <h2 className="text-2xl md:text-4xl font-bold text-center">
-          {title}
-        </h2>
+        <h2 className="text-2xl md:text-4xl font-bold text-center">{title}</h2>
         <p className="text-muted-foreground font-light text-sm md:text-lg text-center">
           {desc}
         </p>
       </div>
 
-      <div 
-        className="px-4 md:px-20 grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
-      >
+      <div className="px-4 md:px-20 grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {tools.map((tool: toolsprops, index: number) => (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -62,7 +55,7 @@ const PageComponent = ({title,desc,tools}:PageComponentProps) => {
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PageComponent
+export default PageComponent;
