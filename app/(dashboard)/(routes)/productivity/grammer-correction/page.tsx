@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { Presentation } from "lucide-react";
+import { ClipboardList, GraduationCap } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,12 +18,14 @@ import { Loader } from "@/components/common/loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
+import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { NextResponse } from "next/server";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import ReactMarkdown from "react-markdown";
 import PageLayout from "@/components/common/pageLayout";
+import Typewrite from "@/components/common/TypeWrite";
 
-const LessonPlannerPage = () => {
+const GrammerCorrectionPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
@@ -39,16 +41,26 @@ const LessonPlannerPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      form.setValue("prompt", "");
       const userMessage: ChatCompletionRequestMessage = {
         role: "user",
-        content: values.prompt + " in markdown format",
+        content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-
-      const response = await axios.post("/api/lesson", {
-        messages: newMessages,
+      console.log(values.prompt, "from ui");
+      const resposne = await axios.post("/api/grammer", {
+        messages: values.prompt,
       });
-      setMessages((current) => [...current, userMessage, response.data]);
+
+      console.log(resposne.data.corrected, "from api");
+      setMessages((current) => [
+        ...current,
+        { role: "user", content: values.prompt },
+        {
+          role: "assistant",
+          content: resposne.data.response.corrected,
+        },
+      ]);
 
       form.reset();
     } catch (error: any) {
@@ -66,11 +78,11 @@ const LessonPlannerPage = () => {
   return (
     <PageLayout>
       <Heading
-        title="Lesson Planner"
-        description="Generate a lesson plan for a specific topic."
-        icon={Presentation}
-        iconColor="text-sky-700"
-        bgColor="bg-sky-700/10"
+        title="Grammer correction"
+        description="Correct your grammer with the help of AI."
+        icon={GraduationCap}
+        iconColor="text-emerald-700"
+        bgColor="bg-emerald-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -90,7 +102,8 @@ const LessonPlannerPage = () => {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Write a lesson plan for an introductory algebra class"
+                        placeholder="
+                                        My mother are a doctor, but my father is a angeneer."
                         {...field}
                       />
                     </FormControl>
@@ -103,7 +116,7 @@ const LessonPlannerPage = () => {
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Create Lesson Plan
+                Correct Grammer
               </Button>
             </form>
           </Form>
@@ -118,26 +131,29 @@ const LessonPlannerPage = () => {
             <Empty label="No conversation started." />
           )}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.content}
-                className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user"
-                    ? "bg-white border border-black/10"
-                    : "bg-muted"
-                )}
-              >
-                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <div className="text-sm whitespace-pre-wrap w-full">
-                  {message.role === "user" ? (
-                    message.content
-                  ) : (
-                    <ReactMarkdown>{message.content || ""}</ReactMarkdown>
-                  )}
+            {messages.map((message) => {
+              return message.role === "user" ? (
+                <div
+                  key={message.content}
+                  className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-white border border-black/10"
+                >
+                  <UserAvatar />
+                  <p className="text-sm whitespace-pre-wrap">
+                    {message.content}
+                  </p>
                 </div>
-              </div>
-            ))}
+              ) : (
+                <div
+                  key={message.content}
+                  className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-muted"
+                >
+                  <BotAvatar />
+                  <Typewrite
+                    message={message.content || ""}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -145,4 +161,4 @@ const LessonPlannerPage = () => {
   );
 };
 
-export default LessonPlannerPage;
+export default GrammerCorrectionPage;

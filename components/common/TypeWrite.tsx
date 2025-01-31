@@ -5,7 +5,7 @@ const LETTER_DELAY = 0.025;
 
 const Typewrite = ({ message }: { message: string }) => {
   return (
-    <p className="mb-2.5 text-sm font-light uppercase">
+    <p className="mb-2.5 text-sm font-light">
       <span className="inline-block size-2 bg-neutral-950" />
       <span className="ml-3">
         {message.split("").map((l, i) => (
@@ -34,6 +34,7 @@ const Typewrite = ({ message }: { message: string }) => {
                 delay: i * LETTER_DELAY,
                 duration: 0,
               }}
+              key={i}
             >
               {l}
               <motion.span

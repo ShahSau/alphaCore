@@ -29,7 +29,7 @@ import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { NextResponse } from "next/server";
 import { useProModal, useSidebarToggle } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import Typewrite from "@/components/TypeWrite";
+import Typewrite from "@/components/common/TypeWrite";
 import { motion } from "framer-motion";
 import PageLayout from "@/components/common/pageLayout";
 
