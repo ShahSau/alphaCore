@@ -22,6 +22,12 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import PageLayout from "@/components/common/pageLayout";
+import { LessonPlans } from "@/components/productivity/LessonPlans";
+
+const splitStringAtHashes=(input: string): string[]=> {
+  return input.split('##').map(section => section.trim()).filter(section => section.length > 0);
+}
+
 
 const LessonPlannerPage = () => {
   const router = useRouter();
@@ -41,13 +47,16 @@ const LessonPlannerPage = () => {
     try {
       const userMessage: ChatCompletionRequestMessage = {
         role: "user",
-        content: values.prompt + " in markdown format",
+        content: values.prompt + " in markdown format with the following steps:\n1. Objective \n1. Materials \n3. Introduction\n4. Guided Practice \n5. Closure",
       };
       const newMessages = [...messages, userMessage];
 
       const response = await axios.post("/api/lesson", {
         messages: newMessages,
       });
+      // console.log(splitStringAtHashes(response.data.content), "from api");
+      // console.log(response.data, "from api");
+      response.data.content = splitStringAtHashes(response.data.content);
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
@@ -133,8 +142,10 @@ const LessonPlannerPage = () => {
                   {message.role === "user" ? (
                     message.content
                   ) : (
-                    <ReactMarkdown>{message.content || ""}</ReactMarkdown>
+                    // <ReactMarkdown>{message.content || ""}</ReactMarkdown>
+                    <LessonPlans plans={Array.isArray(message.content) ? message.content : []}/>
                   )}
+                 
                 </div>
               </div>
             ))}
