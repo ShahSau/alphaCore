@@ -11,7 +11,7 @@ interface LessonPlansProps {
 export const LessonPlans = ({ plans }: LessonPlansProps) => {
   const [selected, setSelected] = useState(TABS[0]);
   return (
-    <section className="overflow-hidden bg-slate-900 px-4 py-12 text-slate-50">
+    <section className="overflow-hidden bg-transparent px-4 py-12 text-slate-900">
       <Heading plans={plans} />
       <Tabs selected={selected} setSelected={setSelected} />
       <Plans selected={selected} plans={plans} />
@@ -50,7 +50,7 @@ const Tabs = ({
           className={`relative overflow-hidden whitespace-nowrap rounded-md border-[1px] px-3 py-1.5 text-sm font-medium transition-colors duration-500 ${
             selected === tab
               ? "border-violet-500 text-slate-50"
-              : "border-slate-600 bg-transparent text-slate-400"
+              : "border-slate-600 bg-transparent text-slate-500"
           }`}
           key={tab}
         >
