@@ -2,7 +2,7 @@
 import React from "react";
 import PageLayout from '@/components/common/pageLayout'
 import PageComponent from "@/components/common/page-component";
-import { ClipboardType, Book, GraduationCap, MailPlus, Presentation, Sigma, MessageCircle } from "lucide-react";
+import { ClipboardType, Book, SpellCheck, MailPlus, Presentation, Sigma, MessageCircle } from "lucide-react";
 
 const tools = [
   {
@@ -15,7 +15,7 @@ const tools = [
   },
   {
     label: "Grammer correction",
-    icon: GraduationCap,
+    icon: SpellCheck,
     color: "text-emerald-700",
     bgColor: "bg-emerald-700/10",
     href: "/productivity/grammer-correction",

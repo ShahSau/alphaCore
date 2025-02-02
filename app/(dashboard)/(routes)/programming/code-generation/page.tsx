@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ClipboardList, SpellCheck } from "lucide-react";
+import { ArrowLeft, Braces } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,17 +18,18 @@ import { Loader } from "@/components/common/loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
-import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
-import { NextResponse } from "next/server";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import PageLayout from "@/components/common/pageLayout";
-import Typewrite from "@/components/common/TypeWrite";
 
-const GrammerCorrectionPage = () => {
+const CodePage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const [copied, setCopied] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,26 +42,14 @@ const GrammerCorrectionPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      form.setValue("prompt", "");
       const userMessage: ChatCompletionRequestMessage = {
         role: "user",
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-      console.log(values.prompt, "from ui");
-      const resposne = await axios.post("/api/grammer", {
-        messages: values.prompt,
-      });
 
-      console.log(resposne.data.corrected, "from api");
-      setMessages((current) => [
-        ...current,
-        { role: "user", content: values.prompt },
-        {
-          role: "assistant",
-          content: resposne.data.response.corrected,
-        },
-      ]);
+      const response = await axios.post("/api/code", { messages: newMessages });
+      setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
     } catch (error: any) {
@@ -75,14 +64,26 @@ const GrammerCorrectionPage = () => {
     }
   };
 
+  const copyContent = () => {
+    setCopied(true);
+    toast.success("Copied to clipboard");
+  };
+
   return (
     <PageLayout>
+      <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/programming")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
-        title="Grammer correction"
-        description="Correct your grammer with the help of AI."
-        icon={SpellCheck}
-        iconColor="text-emerald-700"
-        bgColor="bg-emerald-700/10"
+        title="Code Generation"
+        description="Generate code using descriptive text."
+        icon={Braces}
+        iconColor="text-green-700"
+        bgColor="bg-green-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -90,9 +91,9 @@ const GrammerCorrectionPage = () => {
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="
-                        rounded-lg border w-full 
-                        p-4 px-3 md:px-6 focus-within:shadow-sm
-                        grid grid-cols-12 gap-2 "
+                          rounded-lg border w-full 
+                          p-4 px-3 md:px-6 focus-within:shadow-sm
+                          grid grid-cols-12 gap-2 "
             >
               <FormField
                 name="prompt"
@@ -102,8 +103,7 @@ const GrammerCorrectionPage = () => {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="
-                                        My mother are a doctor, but my father is a angeneer."
+                        placeholder="Simple toggle button using react hooks."
                         {...field}
                       />
                     </FormControl>
@@ -116,7 +116,7 @@ const GrammerCorrectionPage = () => {
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Correct Grammer
+                Generate
               </Button>
             </form>
           </Form>
@@ -131,29 +131,50 @@ const GrammerCorrectionPage = () => {
             <Empty label="No conversation started." />
           )}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => {
-              return message.role === "user" ? (
-                <div
-                  key={message.content}
-                  className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-white border border-black/10"
-                >
-                  <UserAvatar />
-                  <p className="text-sm whitespace-pre-wrap">
-                    {message.content}
-                  </p>
-                </div>
-              ) : (
-                <div
-                  key={message.content}
-                  className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-muted"
-                >
-                  <BotAvatar />
-                  <Typewrite
-                    message={message.content || ""}
-                  />
-                </div>
-              );
-            })}
+            {messages.map((message) => (
+              <div
+                key={message.content}
+                className={cn(
+                  "w-full flex items-start  rounded-lg",
+                  message.role === "user"
+                    ? "bg-white border border-black/10 gap-x-8 p-8 "
+                    : "bg-muted"
+                )}
+              >
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                {message.role === "user" ? (
+                  message.content || ""
+                ) : (
+                  <div className="w-full mb-16">
+                      <SyntaxHighlighter
+                        language="javascript"
+                        style={a11yDark}
+                        className="rounded-lg p-4 w-full"
+                        wrapLines={true}
+                        showLineNumbers={true}
+                        customStyle={{
+                          borderRadius: "0.5rem",
+                          padding: "1rem",
+                        }}
+                      >
+                        {message.content?.replace(/^```jsx\s*|```$/g, "") || ""}
+                      </SyntaxHighlighter>
+                    <div className="mt-4 absolute right-8">
+                      <CopyToClipboard
+                        text={
+                          message.content?.replace(/^```jsx\s*|```$/g, "") || ""
+                        }
+                        onCopy={() => copyContent()}
+                      >
+                        <Button className="w-full" variant="default">
+                          Copy Code
+                        </Button>
+                      </CopyToClipboard>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -161,4 +182,4 @@ const GrammerCorrectionPage = () => {
   );
 };
 
-export default GrammerCorrectionPage;
+export default CodePage;

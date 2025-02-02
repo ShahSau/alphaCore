@@ -3,9 +3,9 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ArrowLeft, Database } from "lucide-react";
+import { ArrowLeft, Binary, Code } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { formSchema } from "./constants";
+import { formSchema,languageOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -24,8 +24,15 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import PageLayout from "@/components/common/pageLayout";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const SqlPage = () => {
+const CodePage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
@@ -35,6 +42,7 @@ const SqlPage = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
+      lang: "JS",
     },
   });
 
@@ -46,9 +54,11 @@ const SqlPage = () => {
         role: "user",
         content: values.prompt,
       };
-      const newMessages = [...messages, userMessage];
+      //const newMessages = [...messages, userMessage.content];
 
-      const response = await axios.post("/api/sql", { messages: newMessages });
+      const response = await axios.post("/api/code-summery", { messages: userMessage.content, lang: values.lang });
+
+
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
@@ -64,10 +74,10 @@ const SqlPage = () => {
     }
   };
 
-  const copyContent = (content: string) => {
-    setCopied(true);
-    toast.success("Copied to clipboard");
-  };
+  // const copyContent = () => {
+  //   setCopied(true);
+  //   toast.success("Copied to clipboard");
+  // };
 
   return (
     <PageLayout>
@@ -79,31 +89,61 @@ const SqlPage = () => {
         <ArrowLeft size={24} />
       </Button>
       <Heading
-        title="Natural language to SQL"
-        description="Convert natural language into SQL queries."
-        icon={Database}
-        iconColor="text-green-500"
-        bgColor="bg-green-500/10"
+        title="Code Summery"
+        description="Summarize your code into a simple explanation."
+        icon={Binary}
+        iconColor="text-green-700"
+        bgColor="bg-green-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid grid-cols-12 gap-2 "
+              className="
+                          rounded-lg border w-full 
+                          p-4 px-3 md:px-6 focus-within:shadow-sm
+                          grid grid-cols-12 gap-2 "
             >
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
+                  <FormItem className="col-span-12 lg:col-span-7">
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Write a SQL query which computes the average total order value for all orders on 2023-04-01."
+                        placeholder="Enter the code to summarize"
                         {...field}
                       />
                     </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lang"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-3">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {languageOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -113,7 +153,7 @@ const SqlPage = () => {
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Generate queries
+                Summerize the code
               </Button>
             </form>
           </Form>
@@ -125,48 +165,29 @@ const SqlPage = () => {
             </div>
           )}
           {messages.length === 0 && !isLoading && (
-            <Empty label="No queries generated." />
+            <Empty label="No conversation started." />
           )}
           <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message) => (
               <div
                 key={message.content}
                 className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                  "p-8 w-full flex items-start  rounded-lg",
                   message.role === "user"
-                    ? "bg-white border border-black/10"
-                    : "bg-[#2B2B2B]"
+                    ? "bg-white border border-black/10 gap-x-8 p-8 "
+                    : "bg-muted"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <div className="text-sm overflow-hidden leading-7 whitespace-pre-wrap">
-                  {message.role === "user" ? (
-                    message.content || ""
-                  ) : (
-                    <>
-                      <SyntaxHighlighter
-                        language="sql"
-                        style={a11yDark}
-                        wrapLines={true}
-                        showLineNumbers={true}
-                        customStyle={{
-                          borderRadius: "0.5rem",
-                          padding: "1rem",
-                        }}
-                      >
-                        {message.content?.replace(/^```sql\s*|```$/g, "") || ""}
-                      </SyntaxHighlighter>
-                      <CopyToClipboard
-                        text={message.content || ""}
-                        onCopy={() => copyContent(message.content || "")}
-                      >
-                        <Button className="ml-2" variant="secondary">
-                          Copy
-                        </Button>
-                      </CopyToClipboard>
-                    </>
-                  )}
-                </div>
+                {message.role === "user" ? (
+                <p className="text-md">{message.content}</p>
+                ) : (
+                  <div className="w-full ml-4 text-md">
+                    
+                      {message.content}
+
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -176,4 +197,4 @@ const SqlPage = () => {
   );
 };
 
-export default SqlPage;
+export default CodePage;
