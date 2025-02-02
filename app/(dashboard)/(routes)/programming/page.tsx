@@ -1,8 +1,8 @@
 "use client";
-import PageComponent from '@/components/common/page-component';
-import PageLayout from '@/components/common/pageLayout'
-import { Database, Braces, Binary, Bug, FileCode2 } from 'lucide-react';
-import React from 'react'
+import PageComponent from "@/components/common/page-component";
+import PageLayout from "@/components/common/pageLayout";
+import { Database, Braces, Binary, Bug, FileCode2 } from "lucide-react";
+import React from "react";
 
 const tools = [
   {
@@ -22,12 +22,12 @@ const tools = [
     modelName: "Code Generation",
   },
   {
-    label: "Code Summery",
+    label: "Code Summary",
     icon: Binary,
     color: "text-green-500",
     bgColor: "bg-green-500/10",
-    href: "/programming/code-summery",
-    modelName: "Code Summery",
+    href: "/programming/code-summary",
+    modelName: "Code Summary",
   },
   {
     label: "Code Correction",
@@ -44,7 +44,7 @@ const tools = [
     bgColor: "bg-green-500/10",
     href: "/programming/code-convertion",
     modelName: "Code convertion",
-  }
+  },
 ];
 const Page = () => {
   return (
@@ -55,7 +55,7 @@ const Page = () => {
         tools={tools}
       />
     </PageLayout>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

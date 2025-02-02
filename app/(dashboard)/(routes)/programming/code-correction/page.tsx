@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ArrowLeft, FileCode2 } from "lucide-react";
+import { ArrowLeft, Braces, Bug } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema, languageOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,10 +20,10 @@ import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import PageLayout from "@/components/common/pageLayout";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import PageLayout from "@/components/common/pageLayout";
 import {
   Select,
   SelectContent,
@@ -32,7 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const CodeConvertionPage = () => {
+const CodeCorrectionPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
@@ -42,8 +42,7 @@ const CodeConvertionPage = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
-      fromLang: "JS",
-      toLang: "Python",
+      lang: "JS",
     },
   });
 
@@ -55,13 +54,12 @@ const CodeConvertionPage = () => {
         role: "user",
         content: values.prompt,
       };
+      const newMessages = [...messages, userMessage];
 
-      const response = await axios.post("/api/programming/code-convertion", {
-        messages: userMessage.content,
-        fromlang: values.fromLang,
-        tolang: values.toLang,
+      const response = await axios.post("/api/programming/code-correction", {
+        messages: newMessages,
+        lang: values.lang,
       });
-
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
@@ -92,9 +90,9 @@ const CodeConvertionPage = () => {
         <ArrowLeft size={24} />
       </Button>
       <Heading
-        title="Code convertion"
-        description="Summarize your code into a simple explanation."
-        icon={FileCode2}
+        title="Code Correction"
+        description="Use our code correction tool to correct your code"
+        icon={Bug}
         iconColor="text-green-700"
         bgColor="bg-green-700/10"
       />
@@ -111,12 +109,12 @@ const CodeConvertionPage = () => {
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-6">
+                  <FormItem className="col-span-12 lg:col-span-7">
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Enter the code to convert"
+                        placeholder="Enter your code here to correct"
                         {...field}
                       />
                     </FormControl>
@@ -125,36 +123,9 @@ const CodeConvertionPage = () => {
               />
               <FormField
                 control={form.control}
-                name="fromLang"
+                name="lang"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-2">
-                    <Select
-                      disabled={isLoading}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue defaultValue={field.value} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {languageOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="toLang"
-                render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-2">
+                  <FormItem className="col-span-12 lg:col-span-3">
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
@@ -183,7 +154,7 @@ const CodeConvertionPage = () => {
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Convert the code
+                Correct Code
               </Button>
             </form>
           </Form>
@@ -202,7 +173,7 @@ const CodeConvertionPage = () => {
               <div
                 key={message.content}
                 className={cn(
-                  "p-8 w-full flex items-start  rounded-lg",
+                  "w-full flex items-start  rounded-lg",
                   message.role === "user"
                     ? "bg-white border border-black/10 gap-x-8 p-8 "
                     : "bg-muted"
@@ -210,9 +181,9 @@ const CodeConvertionPage = () => {
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 {message.role === "user" ? (
-                  <p className="text-md">{message.content}</p>
+                  message.content || ""
                 ) : (
-                  <div className="w-full ml-4 text-md mb-6">
+                  <div className="w-full mb-16">
                     <SyntaxHighlighter
                       language={
                         message.content?.match(/```(\w+)/)?.[1] || "plaintext"
@@ -226,9 +197,9 @@ const CodeConvertionPage = () => {
                         padding: "1rem",
                       }}
                     >
-                      {message.content || ""}
+                      {message.content?.replace(/^```jsx\s*|```$/g, "") || ""}
                     </SyntaxHighlighter>
-                    <div className="mt-1 absolute right-8">
+                    <div className="mt-4 absolute right-8">
                       <CopyToClipboard
                         text={
                           message.content?.replace(/^```jsx\s*|```$/g, "") || ""
@@ -251,4 +222,4 @@ const CodeConvertionPage = () => {
   );
 };
 
-export default CodeConvertionPage;
+export default CodeCorrectionPage;

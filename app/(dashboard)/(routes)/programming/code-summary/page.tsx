@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import Heading from "@/components/common/heading";
 import { ArrowLeft, Binary, Code } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { formSchema,languageOptions } from "./constants";
+import { formSchema, languageOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -28,7 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 
 const CodeSummaryPage = () => {
   const router = useRouter();
@@ -53,8 +52,10 @@ const CodeSummaryPage = () => {
         content: values.prompt,
       };
 
-      const response = await axios.post("/api/code-summery", { messages: userMessage.content, lang: values.lang });
-
+      const response = await axios.post("/api/programming/code-summary", {
+        messages: userMessage.content,
+        lang: values.lang,
+      });
 
       setMessages((current) => [...current, userMessage, response.data]);
 
@@ -81,7 +82,7 @@ const CodeSummaryPage = () => {
         <ArrowLeft size={24} />
       </Button>
       <Heading
-        title="Code Summery"
+        title="Code Summary"
         description="Summarize your code into a simple explanation."
         icon={Binary}
         iconColor="text-green-700"
@@ -145,7 +146,7 @@ const CodeSummaryPage = () => {
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Summerize the code
+                Summarize the code
               </Button>
             </form>
           </Form>
@@ -172,13 +173,9 @@ const CodeSummaryPage = () => {
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 {message.role === "user" ? (
-                <p className="text-md">{message.content}</p>
+                  <p className="text-md">{message.content}</p>
                 ) : (
-                  <div className="w-full ml-4 text-md">
-                    
-                      {message.content}
-
-                  </div>
+                  <div className="w-full ml-4 text-md">{message.content}</div>
                 )}
               </div>
             ))}

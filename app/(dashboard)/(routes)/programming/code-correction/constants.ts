@@ -29,5 +29,5 @@ export const languageOptions = [
   {
     value: "C++",
     label: "C++",
-  }
+  },
 ];
