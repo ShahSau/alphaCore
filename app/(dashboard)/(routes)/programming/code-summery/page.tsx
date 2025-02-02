@@ -20,9 +20,6 @@ import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import PageLayout from "@/components/common/pageLayout";
 import {
   Select,
@@ -32,7 +29,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const CodePage = () => {
+
+const CodeSummaryPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
@@ -54,7 +52,6 @@ const CodePage = () => {
         role: "user",
         content: values.prompt,
       };
-      //const newMessages = [...messages, userMessage.content];
 
       const response = await axios.post("/api/code-summery", { messages: userMessage.content, lang: values.lang });
 
@@ -73,11 +70,6 @@ const CodePage = () => {
       router.refresh();
     }
   };
-
-  // const copyContent = () => {
-  //   setCopied(true);
-  //   toast.success("Copied to clipboard");
-  // };
 
   return (
     <PageLayout>
@@ -197,4 +189,4 @@ const CodePage = () => {
   );
 };
 
-export default CodePage;
+export default CodeSummaryPage;

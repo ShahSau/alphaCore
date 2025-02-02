@@ -3,9 +3,9 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ArrowLeft, Braces } from "lucide-react";
+import { ArrowLeft, FileCode2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { formSchema } from "./constants";
+import { formSchema, languageOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -20,12 +20,19 @@ import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
+import PageLayout from "@/components/common/pageLayout";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import PageLayout from "@/components/common/pageLayout";
+import { CopyToClipboard } from "react-copy-to-clipboard"; //////////
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const CodePage = () => {
+const CodeConvertionPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
@@ -35,6 +42,8 @@ const CodePage = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
+      fromLang: "JS",
+      toLang: "Python",
     },
   });
 
@@ -46,9 +55,13 @@ const CodePage = () => {
         role: "user",
         content: values.prompt,
       };
-      const newMessages = [...messages, userMessage];
 
-      const response = await axios.post("/api/code", { messages: newMessages });
+      const response = await axios.post("/api/code-convertion", {
+        messages: userMessage.content,
+        fromlang: values.fromLang,
+        tolang: values.toLang,
+      });
+
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
@@ -79,9 +92,9 @@ const CodePage = () => {
         <ArrowLeft size={24} />
       </Button>
       <Heading
-        title="Code Generation"
-        description="Generate code using descriptive text."
-        icon={Braces}
+        title="Code convertion"
+        description="Summarize your code into a simple explanation."
+        icon={FileCode2}
         iconColor="text-green-700"
         bgColor="bg-green-700/10"
       />
@@ -98,15 +111,69 @@ const CodePage = () => {
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
+                  <FormItem className="col-span-12 lg:col-span-6">
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Simple toggle button using react hooks."
+                        placeholder="Enter the code to convert"
                         {...field}
                       />
                     </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="fromLang"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-2">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {languageOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="toLang"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-2">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {languageOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -116,7 +183,7 @@ const CodePage = () => {
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Generate
+                Convert the code
               </Button>
             </form>
           </Form>
@@ -135,7 +202,7 @@ const CodePage = () => {
               <div
                 key={message.content}
                 className={cn(
-                  "w-full flex items-start  rounded-lg",
+                  "p-8 w-full flex items-start  rounded-lg",
                   message.role === "user"
                     ? "bg-white border border-black/10 gap-x-8 p-8 "
                     : "bg-muted"
@@ -143,11 +210,13 @@ const CodePage = () => {
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 {message.role === "user" ? (
-                  message.content || ""
+                  <p className="text-md">{message.content}</p>
                 ) : (
-                  <div className="w-full mb-16">
+                  <div className="w-full ml-4 text-md mb-6">
                     <SyntaxHighlighter
-                      language="javascript"
+                      language={
+                        message.content?.match(/```(\w+)/)?.[1] || "plaintext"
+                      }
                       style={a11yDark}
                       className="rounded-lg p-4 w-full"
                       wrapLines={true}
@@ -157,9 +226,9 @@ const CodePage = () => {
                         padding: "1rem",
                       }}
                     >
-                      {message.content?.replace(/^```jsx\s*|```$/g, "") || ""}
+                      {message.content || ""}
                     </SyntaxHighlighter>
-                    <div className="mt-4 absolute right-8">
+                    <div className="mt-1 absolute right-8">
                       <CopyToClipboard
                         text={
                           message.content?.replace(/^```jsx\s*|```$/g, "") || ""
@@ -182,4 +251,4 @@ const CodePage = () => {
   );
 };
 
-export default CodePage;
+export default CodeConvertionPage;
