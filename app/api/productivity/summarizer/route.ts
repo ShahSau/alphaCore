@@ -33,7 +33,7 @@ export async function POST(
 
     const url = 'https://textgears-textgears-v1.p.rapidapi.com/summarize';
     encodedParams.set('text', messages);
-    encodedParams.set('max_sentences', '5');
+    encodedParams.set('max_sentences', '3');
     const options = {
     method: 'POST',
     headers: {
@@ -41,10 +41,6 @@ export async function POST(
         'x-rapidapi-host': 'textgears-textgears-v1.p.rapidapi.com',
         'Content-Type': 'application/x-www-form-urlencoded'
     },
-    // body: JSON.stringify({
-    //     lang: lang,
-    //     text: messages
-    // })
     body: encodedParams
     };
 

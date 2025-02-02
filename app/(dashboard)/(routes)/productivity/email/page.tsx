@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { MailPlus } from "lucide-react";
+import { ArrowLeft, MailPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,7 +58,7 @@ const EamilPage = () => {
       };
       const newMessages = [...email, userMessage];
 
-      const response = await axios.post("/api/email", values);
+      const response = await axios.post("/api/productivity/email", values);
       setEmail((current) => [...current, userMessage, response.data]);
 
       form.reset();
@@ -80,6 +80,13 @@ const EamilPage = () => {
   };
   return (
     <PageLayout>
+      <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/productivity")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
         title="Email Response Generation"
         description="Generate email responses from a prompt."

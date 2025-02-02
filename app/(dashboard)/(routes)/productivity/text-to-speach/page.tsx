@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ClipboardList, MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage as OriginalChatCompletionRequestMessage } from "openai";
 import { Empty } from "@/components/common/empty";
 import { Loader } from "@/components/common/loader";
-import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
@@ -50,7 +49,7 @@ const TextToSpeechPage = () => {
         content: values.prompt,
       };
 
-      const resposne = await axios.post("/api/textTospeech", {
+      const resposne = await axios.post("/api/productivity/textTospeech", {
         messages: values.prompt,
       });
 
@@ -77,6 +76,13 @@ const TextToSpeechPage = () => {
 
   return (
     <PageLayout>
+      <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/productivity")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
         title="Text to Speach"
         description="Convert text to speach using AI."

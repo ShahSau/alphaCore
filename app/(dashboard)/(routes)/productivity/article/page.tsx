@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { Newspaper } from "lucide-react";
+import { ArrowLeft, Newspaper } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema, languageOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,7 +53,7 @@ const ArticleSummery = () => {
     try {
       form.setValue("prompt", "");
 
-      const resposne = await axios.post("/api/article", {
+      const resposne = await axios.post("/api/productivity/article", {
         link: values.prompt,
         lang: values.lang,
       });
@@ -74,6 +74,13 @@ const ArticleSummery = () => {
 
   return (
     <PageLayout>
+            <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/productivity")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
         title="Article Summery"
         description="Summarizes the article after extracting it from the specified url."

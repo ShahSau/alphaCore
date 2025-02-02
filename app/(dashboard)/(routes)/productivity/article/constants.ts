@@ -2,37 +2,36 @@ import * as z from "zod";
 
 export const formSchema = z.object({
   prompt: z.string().min(1, {
-    message: "Prompt is required."
+    message: "Prompt is required.",
   }),
   lang: z.string().min(1, {
-    message: "Language is required."
+    message: "Language is required.",
   }),
 });
-
 
 export const languageOptions = [
   {
     value: "en",
-    label: "English"
+    label: "English",
   },
   {
     value: "es",
-    label: "Spanish"
+    label: "Spanish",
   },
   {
     value: "ar",
-    label: "Arabic"
+    label: "Arabic",
   },
   {
     value: "de",
-    label: "German"
+    label: "German",
   },
   {
     value: "fi",
-    label: "Finnish"
+    label: "Finnish",
   },
   {
-    value:"bn",
-    label:"Bengali"
-  }
+    value: "bn",
+    label: "Bengali",
+  },
 ];

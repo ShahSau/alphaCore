@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ClipboardList, SpellCheck } from "lucide-react";
+import { ArrowLeft, ClipboardList, SpellCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
 import { Empty } from "@/components/common/empty";
 import { Loader } from "@/components/common/loader";
-import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/common/user-avatar";
 import { BotAvatar } from "@/components/common/bot-avatar";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
@@ -47,12 +46,10 @@ const GrammerCorrectionPage = () => {
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-      console.log(values.prompt, "from ui");
-      const resposne = await axios.post("/api/grammer", {
+      const resposne = await axios.post("/api/productivity/grammer", {
         messages: values.prompt,
       });
 
-      console.log(resposne.data.corrected, "from api");
       setMessages((current) => [
         ...current,
         { role: "user", content: values.prompt },
@@ -77,6 +74,13 @@ const GrammerCorrectionPage = () => {
 
   return (
     <PageLayout>
+      <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/productivity")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
         title="Grammer correction"
         description="Correct your grammer with the help of AI."
@@ -148,9 +152,7 @@ const GrammerCorrectionPage = () => {
                   className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-muted"
                 >
                   <BotAvatar />
-                  <Typewrite
-                    message={message.content || ""}
-                  />
+                  <Typewrite message={message.content || ""} />
                 </div>
               );
             })}

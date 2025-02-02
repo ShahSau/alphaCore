@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ClipboardList } from "lucide-react";
+import { ArrowLeft, ClipboardList } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,6 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import PageLayout from "@/components/common/pageLayout";
 import Typewrite from "@/components/productivity/TypeWriteProducttivity";
-
 
 interface ChatCompletionRequestMessage
   extends OriginalChatCompletionRequestMessage {
@@ -52,9 +51,8 @@ const SummerizerPage = () => {
         role: "user",
         content: values.prompt,
       };
-      // const newMessages = [...messages, userMessage];
 
-      const resposne = await axios.post("/api/summarizer", {
+      const resposne = await axios.post("/api/productivity/summarizer", {
         messages: values.prompt,
       });
 
@@ -82,6 +80,13 @@ const SummerizerPage = () => {
 
   return (
     <PageLayout>
+      <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/productivity")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
         title="Summerizer"
         description="Summarizes the article after extracting it from the specified url."

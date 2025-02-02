@@ -1,8 +1,16 @@
 "use client";
 import React from "react";
-import PageLayout from '@/components/common/pageLayout'
+import PageLayout from "@/components/common/pageLayout";
 import PageComponent from "@/components/common/page-component";
-import { ClipboardType, Book, SpellCheck, MailPlus, Presentation, Sigma, MessageCircle } from "lucide-react";
+import {
+  ClipboardType,
+  Book,
+  SpellCheck,
+  MailPlus,
+  Presentation,
+  Sigma,
+  MessageCircle,
+} from "lucide-react";
 
 const tools = [
   {
@@ -60,7 +68,6 @@ const tools = [
     bgColor: "bg-emerald-700/10",
     href: "/productivity/text-to-speach",
     modelName: "Text to Speach",
-
   },
 ];
 const Page = () => {
@@ -71,9 +78,8 @@ const Page = () => {
         desc="Explore a variety of tools for increasing your productivity."
         tools={tools}
       />
-
     </PageLayout>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
