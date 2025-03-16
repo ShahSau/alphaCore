@@ -21,6 +21,8 @@ import { BotAvatar } from "@/components/common/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "react-hot-toast";
 import PageLayout from "@/components/common/pageLayout";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   Select,
   SelectContent,
@@ -173,7 +175,21 @@ const CodeSummaryPage = () => {
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 {message.role === "user" ? (
-                  <p className="text-md">{message.content}</p>
+                  <SyntaxHighlighter
+                    language={
+                      message.content?.match(/```(\w+)/)?.[1] || "plaintext"
+                    }
+                    style={a11yDark}
+                    className="rounded-lg p-4 w-full"
+                    wrapLines={true}
+                    showLineNumbers={true}
+                    customStyle={{
+                      borderRadius: "0.5rem",
+                      padding: "1rem",
+                    }}
+                  >
+                    {message.content?.replace(/^```jsx\s*|```$/g, "") || ""}
+                  </SyntaxHighlighter>
                 ) : (
                   <div className="w-full ml-4 text-md">{message.content}</div>
                 )}

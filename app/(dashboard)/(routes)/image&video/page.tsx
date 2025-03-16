@@ -27,7 +27,7 @@ const tools = [
     icon: Ratio,
     color: "text-pink-700",
     bgColor: "bg-pink-700/10",
-    href: "/image&video/portraiat-generation",
+    href: "/image&video/portrait",
     modelName: "Portraiat Generation",
   },
   {

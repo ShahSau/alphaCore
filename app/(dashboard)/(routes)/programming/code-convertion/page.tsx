@@ -210,7 +210,21 @@ const CodeConvertionPage = () => {
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 {message.role === "user" ? (
-                  <p className="text-md">{message.content}</p>
+                  <SyntaxHighlighter
+                    language={
+                      message.content?.match(/```(\w+)/)?.[1] || "plaintext"
+                    }
+                    style={a11yDark}
+                    className="rounded-lg p-4 w-full"
+                    wrapLines={true}
+                    showLineNumbers={true}
+                    customStyle={{
+                      borderRadius: "0.5rem",
+                      padding: "1rem",
+                    }}
+                  >
+                    {message.content || ""}
+                  </SyntaxHighlighter>
                 ) : (
                   <div className="w-full ml-4 text-md mb-6">
                     <SyntaxHighlighter

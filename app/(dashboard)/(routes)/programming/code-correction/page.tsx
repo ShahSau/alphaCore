@@ -181,7 +181,21 @@ const CodeCorrectionPage = () => {
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 {message.role === "user" ? (
-                  message.content || ""
+                  <SyntaxHighlighter
+                    language={
+                      message.content?.match(/```(\w+)/)?.[1] || "plaintext"
+                    }
+                    style={a11yDark}
+                    className="rounded-lg p-4 w-full"
+                    wrapLines={true}
+                    showLineNumbers={true}
+                    customStyle={{
+                      borderRadius: "0.5rem",
+                      padding: "1rem",
+                    }}
+                  >
+                    {message.content?.replace(/^```jsx\s*|```$/g, "") || ""}
+                  </SyntaxHighlighter>
                 ) : (
                   <div className="w-full mb-16">
                     <SyntaxHighlighter

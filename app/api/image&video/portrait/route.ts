@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
-
+import axios from 'axios';
 
 export async function POST(
     req: Request
@@ -10,21 +10,22 @@ export async function POST(
    try {
     const { userId } = auth();
     const body = await req.json();
-    const { messages  } = body;
+    const { gender,age, ethnicity } = body;
 
-    const encodedParams = new URLSearchParams();
+    console.log("FFF",body)
+
+    // const encodedParams = new URLSearchParams();
     
     if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
 
-    if (!messages) {
+    if (!gender || !age || !ethnicity) {
         return new NextResponse("Messages are required", { status: 400 });
     }
 
-    console.log('API_KEY:', process.env.RapidAPI_Key);
-    console.log('djdhdhdhd:', process.env.NEXT_PROTRAIT_API_KEY);
+
     // const freeTrial = await checkApiLimit();
     // const isPro = await checkSubscription();
 
@@ -32,27 +33,24 @@ export async function POST(
     //     return new NextResponse("You have exceeded the free trial limit.", { status: 403 });
     // }
 
-    const url = 'https://textgears-textgears-v1.p.rapidapi.com/summarize';
-    encodedParams.set('text', messages);
-    encodedParams.set('max_sentences', '3');
-    const options = {
-    method: 'POST',
-    headers: {
-        'x-rapidapi-key': process.env.NEXT_PROTRAIT_API_KEY || '',
-        'x-rapidapi-host': 'textgears-textgears-v1.p.rapidapi.com',
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: encodedParams
-    };
+    console.log("HHHH")
+console.log('API_KEY:', process.env.NEXT_RapidAPI_Key);
+console.log('djdhdhdhd:', process.env.NEXT_PROTRAIT_API_KEY);
 
-    const response = await fetch(url, options);
-    const res = await response.text();
-    const data = JSON.parse(res);
-    
+    const response = await axios.get(`https://face-studio.p.rapidapi.com/generate?gender=${gender}&age=${age}&ethnicity=${ethnicity}`, {
+        headers: {
+            'x-rapidapi-key': process.env.NEXT_PROTRAIT_API_KEY,
+            'x-rapidapi-host': 'face-studio.p.rapidapi.com'
+          },
+    //   params,
+      responseType: 'blob', // Ensure the response is treated as a binary data
+    });
+
+    console.log('Face generated:', response.data);
     // if(!isPro){
     //     await incrementApiLimit();
     // }
-     return NextResponse.json(data);
+     return NextResponse.json(response);
    } catch (error) {
     
     return new NextResponse("Internal Error", { status: 500 });

@@ -5,7 +5,12 @@ import React, { useState } from "react";
 import Heading from "@/components/common/heading";
 import { MoveUpRight, Ratio, Download } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { formSchema } from "./constants";
+import {
+  formSchema,
+  genderOptions,
+  ageOptions,
+  ethnicityOptions,
+} from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -21,6 +26,14 @@ import { toast } from "react-hot-toast";
 import Controls from "@/components/ImageComponent";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import PageLayout from "@/components/common/pageLayout";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { generateFace } from "@/app/api/faceStudio/route";
 
 const PortraitPage = () => {
   const router = useRouter();
@@ -30,7 +43,9 @@ const PortraitPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      prompt: "",
+      gender: "female",
+      age: "20s",
+      ethnicity: "latin_american",
     },
   });
 
@@ -39,9 +54,17 @@ const PortraitPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setImages("");
-      form.setValue("prompt", "");
-      const response = await axios.post("/api/portrait", values);
-      setImages(response.data.generated_image);
+      form.setValue("age", "20s");
+      form.setValue("gender", "Female");
+      form.setValue("ethnicity", "Latin American");
+
+      // const imageBlob = await generateFace({ gender: values.gender, age: values.age, ethnicity: values.ethnicity});
+      // const imageUrl = URL.createObjectURL(imageBlob);
+      const imageUrl = await axios.post("/api/image&video/portrait", values);
+
+console.log('imageUrl:', imageUrl);
+      setImages(imageUrl.data);
+
       form.reset();
     } catch (error: any) {
       if (error?.response?.status === 403) {
@@ -91,20 +114,89 @@ const PortraitPage = () => {
                         grid grid-cols-12 gap-2 "
             >
               <FormField
-                name="prompt"
+                control={form.control}
+                name="gender"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-9">
-                    <FormControl className="m-0 p-0">
-                      <Input
-                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        disabled={isLoading}
-                        placeholder="a latina woman in casual clothes, natural skin, 8k uhd, high quality, film grain, Fujifilm XT3"
-                        {...field}
-                      />
-                    </FormControl>
+                  <FormItem className="col-span-12 lg:col-span-3">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={String(field.value)}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {genderOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="age"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-3">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={String(field.value)}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {ageOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="ethnicity"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-3">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {ethnicityOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
               <Button
                 className="col-span-12 lg:col-span-3 w-full"
                 type="submit"
