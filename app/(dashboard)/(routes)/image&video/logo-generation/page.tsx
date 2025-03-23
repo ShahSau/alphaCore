@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { ImageIcon, Download, MoveUpRight } from "lucide-react";
+import { Feather, Download, MoveUpRight, ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { Empty } from "@/components/common/empty";
 import { Loader } from "@/components/common/loader";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
@@ -21,7 +22,7 @@ import Controls from "@/components/ImageComponent";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import PageLayout from "@/components/common/pageLayout";
 
-const ImagePage = () => {
+const LogoPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [images, setImages] = useState<string>("");
@@ -39,8 +40,7 @@ const ImagePage = () => {
     try {
       setImages("");
 
-      const response = await axios.post("/api/image", values);
-
+      const response = await axios.post("/api/image&video/logo", values);
       setImages(response.data.generated_image);
       form.reset();
     } catch (error: any) {
@@ -74,10 +74,17 @@ const ImagePage = () => {
 
   return (
     <PageLayout>
+      <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/image&video")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
-        title="Image Generation"
-        description="Turn your promt into an image."
-        icon={ImageIcon}
+        title="Logo Generation"
+        description="Turn your promt into memorable logos."
+        icon={Feather}
         iconColor="text-pink-700"
         bgColor="bg-pink-700/10"
       />
@@ -99,20 +106,21 @@ const ImagePage = () => {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="A picture of a horse in Swiss Alps"
+                        placeholder="paper plane logo with shadow of plane flying around the world"
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
+
               <Button
                 className="col-span-12 lg:col-span-3 w-full"
                 type="submit"
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Generate Image
+                Generate Logo
               </Button>
             </form>
           </Form>
@@ -123,6 +131,7 @@ const ImagePage = () => {
               <Loader />
             </div>
           )}
+          {images === "" && !isLoading && <Empty label={"No logo generated"} />}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-8">
             {images !== "" && !isLoading && (
               <Card key={images} className="rounded-lg overflow-hidden">
@@ -173,4 +182,4 @@ const ImagePage = () => {
   );
 };
 
-export default ImagePage;
+export default LogoPage;
