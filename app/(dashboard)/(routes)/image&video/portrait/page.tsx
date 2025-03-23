@@ -14,7 +14,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Empty } from "@/components/common/empty";
@@ -33,12 +32,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { generateFace } from "@/app/api/faceStudio/route";
 
 const PortraitPage = () => {
   const router = useRouter();
   const proModal = useProModal();
-  const [images, setImages] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,41 +51,41 @@ const PortraitPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setImages("");
-      form.setValue("age", "20s");
-      form.setValue("gender", "Female");
-      form.setValue("ethnicity", "Latin American");
+      setImageUrl("");
+      
+      // Use the form values actually provided by the user
+      // instead of overriding them with hardcoded values
+      const response = await axios.post("/api/image&video/portrait", {
+        gender: values.gender,
+        age: values.age,
+        ethnicity: values.ethnicity
+      });
 
-      // const imageBlob = await generateFace({ gender: values.gender, age: values.age, ethnicity: values.ethnicity});
-      // const imageUrl = URL.createObjectURL(imageBlob);
-      const imageUrl = await axios.post("/api/image&video/portrait", values);
-
-console.log('imageUrl:', imageUrl);
-      setImages(imageUrl.data);
-
-      form.reset();
+      
+      // The backend now returns a base64 data URL
+      setImageUrl(response.data);
+      
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
       } else {
-        console.error(error);
+        console.error("Error generating portrait:", error);
         toast.error("Something went wrong. Please try again.");
       }
     } finally {
       router.refresh();
     }
   };
+
   const downloadImage = async (url: string) => {
     try {
-      const response = await fetch(url);
-      const blob = await response.blob();
+      // For base64 images
       const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "generatedimage.jpg";
+      link.href = url;
+      link.download = "generated-portrait.jpg";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
     } catch (error) {
       console.error("Error downloading the image:", error);
       toast.error("Error downloading the image. Please try again.");
@@ -98,7 +96,7 @@ console.log('imageUrl:', imageUrl);
     <PageLayout>
       <Heading
         title="Portrait Generation"
-        description="Turn your text into a portrait."
+        description="Generate realistic portraits based on gender, age, and ethnicity."
         icon={Ratio}
         iconColor="text-pink-700"
         bgColor="bg-pink-700/10"
@@ -109,9 +107,9 @@ console.log('imageUrl:', imageUrl);
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="
-                        rounded-lg border w-full 
-                        p-4 px-3 md:px-6 focus-within:shadow-sm
-                        grid grid-cols-12 gap-2 "
+                rounded-lg border w-full 
+                p-4 px-3 md:px-6 focus-within:shadow-sm
+                grid grid-cols-12 gap-2"
             >
               <FormField
                 control={form.control}
@@ -121,7 +119,7 @@ console.log('imageUrl:', imageUrl);
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
-                      value={String(field.value)}
+                      value={field.value}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -149,7 +147,7 @@ console.log('imageUrl:', imageUrl);
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
-                      value={String(field.value)}
+                      value={field.value}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -200,7 +198,7 @@ console.log('imageUrl:', imageUrl);
               <Button
                 className="col-span-12 lg:col-span-3 w-full"
                 type="submit"
-                disabled={isLoading || !form.formState.isValid}
+                disabled={isLoading}
                 size="icon"
               >
                 Generate
@@ -215,8 +213,8 @@ console.log('imageUrl:', imageUrl);
             </div>
           )}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-8">
-            {images !== "" && !isLoading && (
-              <Card key={images} className="rounded-lg overflow-hidden">
+            {imageUrl && !isLoading && (
+              <Card key={imageUrl} className="rounded-lg overflow-hidden">
                 <div className="relative aspect-square">
                   <TransformWrapper initialScale={1}>
                     {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
@@ -225,11 +223,12 @@ console.log('imageUrl:', imageUrl);
                         <TransformComponent>
                           <div className="w-full h-full">
                             <Image
-                              alt="Generated"
-                              src={images}
+                              alt="Generated Portrait"
+                              src={imageUrl}
                               width={1000}
                               height={1000}
                               className="object-cover w-screen h-screen"
+                              unoptimized={true} // Important for base64 images
                             />
                           </div>
                         </TransformComponent>
@@ -239,7 +238,7 @@ console.log('imageUrl:', imageUrl);
                 </div>
                 <CardFooter className="p-2">
                   <Button
-                    onClick={() => window.open(images)}
+                    onClick={() => window.open(imageUrl, '_blank')}
                     variant="secondary"
                     className="w-full m-2"
                   >
@@ -247,7 +246,7 @@ console.log('imageUrl:', imageUrl);
                     <MoveUpRight className="h-4 w-4 ml-2" />
                   </Button>
                   <Button
-                    onClick={() => downloadImage(images)}
+                    onClick={() => downloadImage(imageUrl)}
                     variant="default"
                     className="w-full m-2"
                   >
