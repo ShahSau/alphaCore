@@ -150,7 +150,7 @@ const FormGenerationPage = () => {
                   className="p-8 w-full flex items-start gap-x-8 rounded-lg bg-muted"
                 >
                   <BotAvatar />
-                  <SteppedProgress questions={message.content?.questions} />
+                  <SteppedProgress questions={(message.content as any).questions} />
                 </div>
               );
             })}

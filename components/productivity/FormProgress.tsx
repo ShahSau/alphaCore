@@ -26,10 +26,10 @@ const SteppedProgress: React.FC<any> = ({ questions }) => {
 
     setStepsComplete((pv) => pv + num);
   };
-  console.log(questions);
+
   return (
     <div className="px-4 py-14 w-full">
-      <div className="p-8 bg-white shadow-lg rounded-md  mx-auto">
+      <div className="p-8 bg-white shadow-lg rounded-md mx-auto">
         <Steps numSteps={numSteps} stepsComplete={stepsComplete} />
         <div className="p-2 my-6 bg-gray-100 border-2 border-dashed border-gray-200 rounded-lg">
           {questions[stepsComplete].fieldType === "RadioGroup" ||

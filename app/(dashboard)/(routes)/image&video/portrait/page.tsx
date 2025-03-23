@@ -53,8 +53,6 @@ const PortraitPage = () => {
     try {
       setImageUrl("");
       
-      // Use the form values actually provided by the user
-      // instead of overriding them with hardcoded values
       const response = await axios.post("/api/image&video/portrait", {
         gender: values.gender,
         age: values.age,

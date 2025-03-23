@@ -17,21 +17,8 @@ export async function POST(
    try {
     const { userId } = auth();
     const body = await req.json();
-    // const { prompt, mood, language, type, name, extra=""}:{
-    //     prompt: string;
-    //     mood: string;
-    //     language: string;
-    //     type: string;
-    //     name: string;
-    //     extra: string;
-    // } = body;
-    console.log(body, "BODY");
+
     const { messages } = body;
-    
-    // const instructionMessage: any = {
-    //     role: "system",
-    //     content: `You will be provided an email in ${language}. Write a response of the email. Please ensure that the response is written in the same language as the email, unless otherwise specified. The tone of the response should be ${mood}. This is a(n) ${type}. Your name is ${name}. If necessary, please use the following additional context to inform your response: ${extra}`
-    // };
 
     if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });
