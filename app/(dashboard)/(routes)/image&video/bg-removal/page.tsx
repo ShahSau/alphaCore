@@ -8,6 +8,7 @@ import {
   Download,
   MoveUpRight,
   FileImage,
+  ImageMinus,
   ArrowLeft,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -27,7 +28,7 @@ import Controls from "@/components/ImageComponent";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import PageLayout from "@/components/common/pageLayout";
 
-const ImagePage = () => {
+const BgRemovalPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [images, setImages] = useState<string>("");
@@ -45,7 +46,10 @@ const ImagePage = () => {
     try {
       setImages("");
 
-      const response = await axios.post("/api/image&video/image", values);
+      const response = await axios.post(
+        "/api/image&video/????????????",
+        values
+      );
 
       setImages(response.data.generated_image);
       form.reset();
@@ -88,9 +92,9 @@ const ImagePage = () => {
         <ArrowLeft size={24} />
       </Button>
       <Heading
-        title="Image Generation"
-        description="Turn your promt into an image."
-        icon={FileImage}
+        title="Background Removal"
+        description="Remove the background from an image."
+        icon={ImageMinus}
         iconColor="text-pink-700"
         bgColor="bg-pink-700/10"
       />
@@ -125,7 +129,7 @@ const ImagePage = () => {
                 disabled={isLoading || !form.formState.isValid}
                 size="icon"
               >
-                Generate Image
+                Background Removal
               </Button>
             </form>
           </Form>
@@ -186,4 +190,4 @@ const ImagePage = () => {
   );
 };
 
-export default ImagePage;
+export default BgRemovalPage;

@@ -23,7 +23,6 @@ import { toast } from "react-hot-toast";
 import QuestionList from "@/components/job-search/QuestionList";
 import PageLayout from "@/components/common/pageLayout";
 
-
 interface QA {
   question: string;
   answer: string;
@@ -31,17 +30,16 @@ interface QA {
 
 const parseQA = (str: string): QA[] => {
   const sections = str.trim().split(/\n(?=\d+\.\sQuestion:)/);
-  return sections.map(section => {
-    const [questionPart, ...answerParts] = section.split('\n   Answer: ');
+  return sections.map((section) => {
+    const [questionPart, ...answerParts] = section.split("\n   Answer: ");
     const question = questionPart.replace(/\d+\.\sQuestion:\s/, "").trim();
-    const answer = answerParts.join(' ').trim();
+    const answer = answerParts.join(" ").trim();
     return {
       question,
-      answer
+      answer,
     };
   });
 };
-
 
 const InterviewPage = () => {
   const router = useRouter();
@@ -61,7 +59,9 @@ const InterviewPage = () => {
     try {
       const userMessage: ChatCompletionRequestMessage = {
         role: "user",
-        content: values.prompt.slice(0,-1)+" with answers in this format: 1. Question: - Answer:",
+        content:
+          values.prompt.slice(0, -1) +
+          " with answers in this format: 1. Question: - Answer:",
       };
       const newMessages = [...messages, userMessage];
 
@@ -155,9 +155,7 @@ const InterviewPage = () => {
                   </p>
                 )}
                 {message.role !== "user" && (
-                    <QuestionList
-                      questions={parseQA(message.content || "")}
-                    />
+                  <QuestionList questions={parseQA(message.content || "")} />
                 )}
               </div>
             ))}

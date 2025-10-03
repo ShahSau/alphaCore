@@ -1,16 +1,45 @@
-import PageLayout from '@/components/common/pageLayout'
-import React from 'react'
+"use client";
+import React from "react";
+import PageComponent from "@/components/common/page-component";
+import PageLayout from "@/components/common/pageLayout";
+import { FerrisWheel, PlusCircle, FilePieChart } from "lucide-react";
 
+const tools = [
+  {
+    label: "Contenent Generation",
+    icon: PlusCircle,
+    color: "text-orange-500",
+    bgColor: "bg-orange-500/10",
+    href: "/creativity/content-generation",
+    modelName: "Content Generation",
+  },
+  {
+    label: "Contact Analyzer",
+    icon: FilePieChart,
+    color: "text-orange-500",
+    bgColor: "bg-orange-500/10",
+    href: "/job-search/interview-question",
+    modelName: "Interview Question",
+  },
+  {
+    label: "Mock Interview",
+    icon: FerrisWheel,
+    color: "text-orange-500",
+    bgColor: "bg-orange-500/10",
+    href: "/job-search/mock-interview",
+    modelName: "Mock Interview",
+  },
+];
 const Page = () => {
   return (
     <PageLayout>
-        1. Story Book
-        2. Content Generation 
-        3. Al course generation 
-        4. Contract analyzer 
-        5. Write story
+      <PageComponent
+        title="Creativity"
+        desc="Explore a variety of tools for all your creativity needs."
+        tools={tools}
+      />
     </PageLayout>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

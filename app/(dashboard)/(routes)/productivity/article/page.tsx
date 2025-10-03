@@ -74,7 +74,7 @@ const ArticleSummery = () => {
 
   return (
     <PageLayout>
-            <Button
+      <Button
         className="mb-4 ml-6"
         onClick={() => router.push("/productivity")}
         variant="ghost"

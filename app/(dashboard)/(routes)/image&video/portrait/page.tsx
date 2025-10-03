@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { MoveUpRight, Ratio, Download } from "lucide-react";
+import { MoveUpRight, Ratio, Download, ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import {
   formSchema,
@@ -52,17 +52,14 @@ const PortraitPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setImageUrl("");
-      
+
       const response = await axios.post("/api/image&video/portrait", {
         gender: values.gender,
         age: values.age,
-        ethnicity: values.ethnicity
+        ethnicity: values.ethnicity,
       });
-
-      
       // The backend now returns a base64 data URL
       setImageUrl(response.data);
-      
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
@@ -92,6 +89,13 @@ const PortraitPage = () => {
 
   return (
     <PageLayout>
+      <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/image&video")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
         title="Portrait Generation"
         description="Generate realistic portraits based on gender, age, and ethnicity."
@@ -236,7 +240,7 @@ const PortraitPage = () => {
                 </div>
                 <CardFooter className="p-2">
                   <Button
-                    onClick={() => window.open(imageUrl, '_blank')}
+                    onClick={() => window.open(imageUrl, "_blank")}
                     variant="secondary"
                     className="w-full m-2"
                   >
