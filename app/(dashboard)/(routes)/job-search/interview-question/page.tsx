@@ -3,7 +3,7 @@
 import * as z from "zod";
 import React, { useState } from "react";
 import Heading from "@/components/common/heading";
-import { MessageCircleIcon } from "lucide-react";
+import { ArrowLeft, MessageCircleIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -85,6 +85,13 @@ const InterviewPage = () => {
 
   return (
     <PageLayout>
+      <Button
+        className="mb-4 ml-6"
+        onClick={() => router.push("/job-search")}
+        variant="ghost"
+      >
+        <ArrowLeft size={24} />
+      </Button>
       <Heading
         title="Interview questions"
         description="Create interview questions."
@@ -145,7 +152,7 @@ const InterviewPage = () => {
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user"
                     ? "bg-white border border-black/10"
-                    : "bg-slate-900"
+                    : "bg-slate-900",
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
