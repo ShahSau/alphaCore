@@ -19,15 +19,7 @@ const tools = [
     bgColor: "bg-red-700/10",
     href: "/job-search/interview-question",
     modelName: "Interview Question",
-  },
-  {
-    label: "Mock Interview",
-    icon: MessagesSquare,
-    color: "text-red-700",
-    bgColor: "bg-red-700/10",
-    href: "/job-search/mock-interview",
-    modelName: "Mock Interview",
-  },
+  }
 ];
 const Page = () => {
   return (

@@ -20,15 +20,7 @@ const tools = [
     bgColor: "bg-orange-500/10",
     href: "/job-search/interview-question",
     modelName: "Interview Question",
-  },
-  {
-    label: "Mock Interview",
-    icon: FerrisWheel,
-    color: "text-orange-500",
-    bgColor: "bg-orange-500/10",
-    href: "/job-search/mock-interview",
-    modelName: "Mock Interview",
-  },
+  }
 ];
 const Page = () => {
   return (
