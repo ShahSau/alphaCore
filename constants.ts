@@ -29,18 +29,10 @@ export const tools = [
   {
     label: "Productivity",
     icon: ClipboardList,
-    color: "text-emerald-700",
-    bgColor: "bg-emerald-700/10",
-    href: "/productivity",
-    modelName: "Productivity",
-  },
-  {
-    label: "Creativity",
-    icon: GraduationCap,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
-    href: "/creativity",
-    modelName: "Creativity",
+    href: "/productivity",
+    modelName: "Productivity",
   },
   {
     label: "Programming",

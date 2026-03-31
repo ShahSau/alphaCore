@@ -84,8 +84,8 @@ const FormGenerationPage = () => {
         title="Form Generation"
         description="Generate form from text using AI."
         icon={Book}
-        iconColor="text-emerald-700"
-        bgColor="bg-emerald-700/10"
+        iconColor="text-orange-500"
+        bgColor="bg-orange-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>

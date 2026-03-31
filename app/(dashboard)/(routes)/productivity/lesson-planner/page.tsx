@@ -88,8 +88,8 @@ const LessonPlannerPage = () => {
         title="Lesson Planner"
         description="Generate a lesson plan for a specific topic."
         icon={Presentation}
-        iconColor="text-emerald-700"
-        bgColor="bg-emerald-700/10"
+        iconColor="text-orange-500"
+        bgColor="bg-orange-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>
